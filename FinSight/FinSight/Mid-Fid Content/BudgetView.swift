@@ -19,8 +19,13 @@ struct BudgetView: View {
                     Spacer()
                     TextField("Rp. 5.700.000", text: .constant(""))
                 }
+                HStack {
+                    Text("Other Income")
+                    Spacer()
+                    TextField("Rp. 0", text: .constant(""))
+                }
             }
-            .frame(minHeight: 100, maxHeight: 50)
+            .frame(minHeight: 100, maxHeight: 150)
             Form{
                 Text("Fixed Expenses")
                     .accessibilityHeading(.h2)
@@ -46,6 +51,7 @@ struct BudgetView: View {
                     TextField("Rp. 200.000", text: .constant(""))
                 }
             }
+            .frame(minHeight: 100, maxHeight: .infinity)
 
             Form{
                 Text("Savings")

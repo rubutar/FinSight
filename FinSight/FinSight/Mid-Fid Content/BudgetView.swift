@@ -9,14 +9,15 @@ import SwiftUI
 
 struct BudgetView: View {
     var body: some View {
-        NavigationView {
-            VStack{
-                Spacer()
+        NavigationStack{
+            Form{
                 HStack {
                     Text("Income")
                     Spacer()
                     TextField("Rp. 5.700.000", text: .constant(""))
                 }
+            }
+            Form{
                 Text("Fixed Expenses")
                     .accessibilityHeading(.h2)
                 HStack {
@@ -39,6 +40,8 @@ struct BudgetView: View {
                     Spacer()
                     TextField("Rp. 200.000", text: .constant(""))
                 }
+            }
+            Form{
                 Text("Savings")
                     .accessibilityHeading(.h2)
                 
@@ -46,22 +49,20 @@ struct BudgetView: View {
                     Text("Others")
                     Spacer()
                     TextField("Rp. 200.000", text: .constant(""))
+                    
                 }
-                // button
-                NavigationLink(destination: ContentView()) {
-                    Text("Save & Continue")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding()
-                Spacer()
-                
-                .navigationTitle("Budget")
             }
+            NavigationLink(destination: ContentView()) {
+                Text("Save & Continue")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white)
+                    .foregroundColor(.blue)
+                    .cornerRadius(10)
+            }
+            .padding()
+            .navigationTitle("Budget")
         }
     }
 }

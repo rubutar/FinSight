@@ -1,5 +1,5 @@
 //
-//  OneDimensionalBar.swift
+//  Model.swift
 //  FinSight
 //
 //  Created by Rudi Butarbutar on 18/03/25.

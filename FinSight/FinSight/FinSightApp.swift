@@ -12,7 +12,7 @@ struct FinSightApp: App {
     var body: some Scene {
         WindowGroup {
 //            ContentView()
-            InsightPage()
+            BudgetView()
         }
     }
 }

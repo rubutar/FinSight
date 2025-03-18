@@ -9,20 +9,26 @@ import SwiftUI
 
 struct BudgetView: View {
     var body: some View {
-        NavigationStack{
+        NavigationStack(){
             Form{
                 Text("Incomes")
                     .accessibilityHeading(.h2)
                     .bold()
-                HStack {
+                HStack{
+                    Spacer()
                     Text("Stipend")
-                    Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     TextField("Rp. 5.700.000", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
-                HStack {
-                    Text("Other Income")
+                HStack(){
                     Spacer()
+                    Text("Others")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     TextField("Rp. 0", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
             }
             .frame(minHeight: 100, maxHeight: 150)
@@ -31,27 +37,39 @@ struct BudgetView: View {
                     .accessibilityHeading(.h2)
                     .bold()
                 HStack {
+                    Spacer()
                     Text("Rent")
-                    Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     TextField("Rp. 700.000", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
                 HStack {
-                    Text("Electricity")
                     Spacer()
-                    TextField("Rp. 200.000", text: .constant(""))
-                }
-                HStack {
                     Text("Water")
-                    Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     TextField("Rp. 200.000", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
                 HStack {
-                    Text("Others")
                     Spacer()
+                    Text("Electricity")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     TextField("Rp. 200.000", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
+                }
+                HStack {
+                    Spacer()
+                    Text("Others")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    TextField("Rp. 0", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
             }
-            .frame(minHeight: 100, maxHeight: .infinity)
+            .frame(minHeight: 260)
 
             Form{
                 Text("Savings")
@@ -59,9 +77,12 @@ struct BudgetView: View {
                     .bold()
                 
                 HStack {
-                    Text("Others")
                     Spacer()
-                    TextField("Rp. 200.000", text: .constant(""))
+                    Text("Savings")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    TextField("Rp. 500.000", text: .constant(""))
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 150)
                 }
             }
             NavigationLink(destination: ContentView()) {

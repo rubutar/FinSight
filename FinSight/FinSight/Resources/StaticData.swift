@@ -24,3 +24,25 @@ var arrayExpensesCategory = [
     ExpenseCategoryModel(id: "ctg3", label: "Shopping"),
     ExpenseCategoryModel(id: "ctg4", label: "Other")
 ]
+
+// Chart
+struct DataUsageData {
+    /// A data series for the bars.
+    struct Series: Identifiable {
+        /// Data Group.
+        let category: String
+
+        /// Size of data in gigabytes?
+        let size: Double
+
+        /// The identifier for the series.
+        var id: String { category }
+    }
+
+    static let example: [Series] = [
+        .init(category: "Food", size: 61.6),
+        .init(category: "Transport", size: 8.2),
+        .init(category: "Shopping", size: 5.7),
+        .init(category: "Other", size: 2.6)
+    ]
+}

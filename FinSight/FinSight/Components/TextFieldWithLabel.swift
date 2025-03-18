@@ -8,12 +8,11 @@ struct TextFieldWithLabel: View {
     var body : some View {
         HStack {
             Text(label)
-                .frame(width: 70, alignment: .leading) // Menentukan lebar label
-                .font(.subheadline)
-                .foregroundColor(.gray)
+                .frame(width: 70, alignment: .leading)
+                .font(.body)
+            Spacer()
             TextField(inputPlaceholder, text: $inputValue)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.leading, 10)
+                .multilineTextAlignment(.trailing)
         }
     }
 }

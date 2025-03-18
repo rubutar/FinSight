@@ -1,49 +1,47 @@
-//
-//  AddExpenseView.swift
-//  personalbudgetplan
-//
-//  Created by Patricia Gilberta Fritzie Devina on 16/03/25.
-//
-
 import SwiftUI
 
 struct AddExpenseView: View {
     let destinationNumber: Int
-    @State var inputCategory: String = ""
     @State var inputAmount: String = ""
-    @State var inputDate: String = ""
+    @State var inputDate: Date = Date()
     @State var inputNote: String = ""
+    @State private var date = Date()
+    @State var isSaved: Bool = false
+    
+    @State private var selectedCategory: String = "ctg1"
     
     var body: some View {
-        VStack {
-            Text("Add Expenses: \(destinationNumber)")
-                .font(.system(size: 24, weight: .black))
-                .padding(.vertical, 10)
-            //                    NavigationLink(destination: DetailsView(destinationNumber: destinationNumber + 1)) {
-            //                        MenuButton(label: "Go to detail view no: \(destinationNumber + 1)")
-            //                    }
-            VStack(alignment: .leading, spacing: 15) {
-                TextFieldWithLabel(label:"Category",inputPlaceholder: "Choose Category",inputValue: $inputCategory)
-                TextFieldWithLabel(label:"Amount",inputPlaceholder: "Input Amount",inputValue: $inputAmount)
-                TextFieldWithLabel(label:"Date",inputPlaceholder: "Choose Date",inputValue: $inputDate)
-                TextFieldWithLabel(label:"Note",inputPlaceholder: "Input Note",inputValue: $inputNote)
-                
-                Spacer()
-            }
-            .padding()
-            
-            
-        }.padding()
-            .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Save") {
-                            }
+        NavigationStack {
+            Form {
+                Section {
+                    Picker("Category", selection: $selectedCategory) {
+                        ForEach(arrayExpensesCategory) { itemCategory in
+                            Text("\(itemCategory.label)").tag(itemCategory.id)
                         }
                     }
+                    TextFieldWithLabel(label:"Amount",inputPlaceholder: "Input Amount",inputValue: $inputAmount)
+                    TextFieldWithLabel(label:"Note",inputPlaceholder: "Input Note",inputValue: $inputNote)
+                    TextFieldWithLabelDate(label:"Date",inputDate: $date)
+                }
+                if isSaved {
+                    Text(" Function save belom jadi \n\n Category: \(selectedCategory) \n Amount: \(inputAmount) \n Note: \(inputNote) \n Date: \(date)")
+                }
+            }
+        }.navigationTitle("Add Expenses")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        isSaved = true
+                    }
+                }
+            }
     }
 }
 
+
+
 #Preview {
     AddExpenseView(destinationNumber: 1)
-//        .modelContainer(for: Item.self, inMemory: true)
+    //        .modelContainer(for: Item.self, inMemory: true)
 }

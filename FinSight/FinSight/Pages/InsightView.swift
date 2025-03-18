@@ -6,7 +6,7 @@ struct InsightPage: View {
     var body: some View {
         NavigationStack{
             ScrollView{
-//                OneDimensionalBar(isOverview: true, label: currentMonth).padding()
+                OneDimensionalBar(isOverview: true, label: currentMonth).padding()
                 ForEach(0..<1) { number in
                     GroupBox(label: Text("Motivation")) {
                         Text("Stay focus on the plan")
@@ -15,8 +15,9 @@ struct InsightPage: View {
                         Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
                     }.padding()
                 }
+                Spacer()
                 NavigationLink(destination: TransactionPage()) {
-                    Text("View History")
+                    Text("View Transaction")
                 }.buttonStyle(.bordered)
                 Spacer()
 //                NavigationLink(destination: BudgetPage()) {
@@ -36,8 +37,8 @@ struct InsightPage: View {
                             // destination view to navigation to
                             AddExpenseView(destinationNumber: 1)
                         } label: {
-                            Image(systemName: "plus.circle")
-                                .foregroundColor(.gray)
+                            Image(systemName: "plus")
+                                .foregroundColor(.blue)
                         }
                     }
                 }

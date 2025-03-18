@@ -8,94 +8,97 @@
 import SwiftUI
 
 struct BudgetView: View {
+    @State private var rentAmount: String = ""
+
     var body: some View {
         NavigationStack(){
-            Form{
-                Text("Incomes")
-                    .accessibilityHeading(.h2)
-                    .bold()
-                HStack{
-                    Spacer()
-                    Text("Stipend")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 5.700.000", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
-                }
-                HStack(){
-                    Spacer()
-                    Text("Others")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 0", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
-                }
+            VStack{
+                Image(systemName:"antenna.radiowaves.left.and.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
+                Text("FinSight")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
             }
-            .frame(minHeight: 100, maxHeight: 150)
+            
             Form{
-                Text("Fixed Expenses")
-                    .accessibilityHeading(.h2)
-                    .bold()
-                HStack {
-                    Spacer()
-                    Text("Rent")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 700.000", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
+                Section(header: Text("Incomes")) {
+                    HStack{
+                        Text("Stipend")
+                        TextField("Rp. 5.700.000", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack{
+                        Text("Others")
+                        TextField("Rp. 0", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
                 }
-                HStack {
-                    Spacer()
-                    Text("Water")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 200.000", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
+                Section(header: Text("Fixed Expenses")) {
+                    HStack{
+                        Text("Rent")
+                        TextField("Rp. 700.000", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack{
+                        Text("Water")
+                        TextField("Rp. 200.000", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack{
+                        Text("Electricity")
+                        TextField("Rp. 200.000", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack{
+                        Text("Others")
+                        TextField("Rp. 0", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
                 }
-                HStack {
-                    Spacer()
-                    Text("Electricity")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 200.000", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
-                }
-                HStack {
-                    Spacer()
-                    Text("Others")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 0", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
-                }
-            }
-            .frame(minHeight: 260)
+                .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
 
-            Form{
-                Text("Savings")
-                    .accessibilityHeading(.h2)
-                    .bold()
-                
-                HStack {
-                    Spacer()
-                    Text("Savings")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("Rp. 500.000", text: .constant(""))
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 150)
+                Section(header: Text("Savings")) {
+                    HStack{
+                        Text("Savings")
+                        TextField("Rp. 500.000", text: $rentAmount)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                    }
                 }
+                .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
+
+                Section(header: Text("Budgets")) {
+                    Text("Based on calculation, your monthly budget for the other expense will be:")
+                    Text("Rp. 3.500.000")
+                        .bold()
+                        .font(.title)
+                }
+                .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
+
             }
-            NavigationLink(destination: ContentView()) {
-                Text("Save & Continue")
+
+            
+            NavigationLink(destination: InsightPage()) {
+                Text("Get the Insights")
                     .font(.headline)
-                    .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.white)
                     .foregroundColor(.blue)
                     .cornerRadius(10)
             }
-            .padding()
-            .navigationTitle("Budget")
         }
     }
 }

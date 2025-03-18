@@ -11,15 +11,20 @@ struct BudgetView: View {
     var body: some View {
         NavigationStack{
             Form{
+                Text("Incomes")
+                    .accessibilityHeading(.h2)
+                    .bold()
                 HStack {
-                    Text("Income")
+                    Text("Stipend")
                     Spacer()
                     TextField("Rp. 5.700.000", text: .constant(""))
                 }
             }
+            .frame(minHeight: 100, maxHeight: 50)
             Form{
                 Text("Fixed Expenses")
                     .accessibilityHeading(.h2)
+                    .bold()
                 HStack {
                     Text("Rent")
                     Spacer()
@@ -41,15 +46,16 @@ struct BudgetView: View {
                     TextField("Rp. 200.000", text: .constant(""))
                 }
             }
+
             Form{
                 Text("Savings")
                     .accessibilityHeading(.h2)
+                    .bold()
                 
                 HStack {
                     Text("Others")
                     Spacer()
                     TextField("Rp. 200.000", text: .constant(""))
-                    
                 }
             }
             NavigationLink(destination: ContentView()) {

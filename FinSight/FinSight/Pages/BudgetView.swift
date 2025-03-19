@@ -11,6 +11,7 @@ struct BudgetView: View {
     @State private var rentAmount: String = ""
 
     var body: some View {
+        Spacer()
         NavigationStack(){
             VStack{
                 Image(systemName:"antenna.radiowaves.left.and.right")
@@ -26,6 +27,8 @@ struct BudgetView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
+            .background(Color("bgColor3"))
+            .cornerRadius(20)
             
             Form{
                 Section(header: Text("Incomes")) {
@@ -87,17 +90,12 @@ struct BudgetView: View {
                         .font(.title)
                 }
                 .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
-
             }
-
             
             NavigationLink(destination: InsightPage()) {
                 Text("Get the Insights")
-                    .font(.headline)
+                    .font(.title2 .bold())
                     .frame(maxWidth: .infinity)
-                    .background(Color.white)
-                    .foregroundColor(.blue)
-                    .cornerRadius(10)
             }
         }
     }

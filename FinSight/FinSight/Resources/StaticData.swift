@@ -26,23 +26,38 @@ var arrayExpensesCategory = [
 ]
 
 // Chart
+
+struct Expense: Identifiable {
+    let id = UUID()
+    let title: String
+    let amount: Double
+    let category: String
+    let date: Date
+}
+
+struct Budget: Identifiable {
+    let id = UUID()
+    let income: Double
+    let rent: Double
+    let water: Double
+    let electricity: Double
+    let others: Double
+    let savings: Double
+    let weekly_budget: Double
+    let created_at: Date
+}
+
 struct DataUsageData {
-    /// A data series for the bars.
     struct Series: Identifiable {
-        /// Data Group.
         let category: String
-
-        /// Size of data in gigabytes?
-        let size: Double
-
-        /// The identifier for the series.
+        let amount: Double
         var id: String { category }
     }
 
     static let example: [Series] = [
-        .init(category: "Food", size: 61.6),
-        .init(category: "Transport", size: 8.2),
-        .init(category: "Shopping", size: 5.7),
-        .init(category: "Other", size: 2.6)
+        .init(category: "Food", amount: 900000.0),
+        .init(category: "Transport", amount: 300000.0),
+        .init(category: "Shopping", amount: 1500000.0),
+        .init(category: "Others", amount: 600000.0)
     ]
 }

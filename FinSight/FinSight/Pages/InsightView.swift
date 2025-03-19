@@ -49,7 +49,7 @@ struct InsightPage: View {
         NavigationStack {
             Form{
                 Section{
-                    OneDimensionalBar(isOverview: true, label: currentMonth)
+                    OneDimensionalBar(isOverview: true)
                 }
                 
                 Section{

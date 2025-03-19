@@ -28,7 +28,7 @@ struct BudgetView: View {
                     .padding(.horizontal)
             }
             .background(Color("bgColor3"))
-            .cornerRadius(20)
+            .cornerRadius(10)
             
             Form{
                 Section(header: Text("Incomes")) {
@@ -91,12 +91,16 @@ struct BudgetView: View {
                 }
                 .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
             }
+
             
             NavigationLink(destination: InsightPage()) {
                 Text("Get the Insights")
                     .font(.title2 .bold())
                     .frame(maxWidth: .infinity)
             }
+            .frame(maxWidth: .infinity, maxHeight: 40)
+            .background(Color("bgColor3"))
+            .cornerRadius(20)
         }
     }
 }

@@ -11,8 +11,9 @@ import SwiftUI
 struct FinSightApp: App {
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            BudgetView()
+//            BudgetView()
+            TransactionPage()
+                .modelContainer(for: ExpenseData.self, inMemory: true)
         }
     }
 }

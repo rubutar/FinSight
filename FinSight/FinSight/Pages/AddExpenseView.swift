@@ -7,7 +7,6 @@ struct AddExpenseView: View {
     @State var inputNote: String = ""
     @State private var date = Date()
     @State var isSaved: Bool = false
-    
     @State private var selectedCategory: String = "ctg1"
     
     var body: some View {

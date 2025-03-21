@@ -82,5 +82,5 @@ struct InsightPage: View {
 
 #Preview {
     InsightPage()
-    //        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: ExpenseData.self, inMemory: true)
 }

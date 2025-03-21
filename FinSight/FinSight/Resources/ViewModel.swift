@@ -15,7 +15,6 @@ class BudgetViewModel: ObservableObject {
     }
 
     func loadBudgets() {
-        // Dummy data for now, replace with real storage later
         budgets = [
             Budget(income: 5700000.0, rent: 600000.0, water: 200000.0, electricity: 200000.0, others: 200000.0, savings: 500000.0, weekly_budget: 1000000.0, created_at: Date())
         ]

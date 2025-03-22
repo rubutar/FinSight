@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BudgetView: View {
     @State private var rentAmount: String = ""
+    @Bindable var expenseData: ExpenseData
 
     var body: some View {
         Spacer()
@@ -23,12 +24,9 @@ struct BudgetView: View {
                     .fontWeight(.semibold)
                 Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
                     .font(.footnote)
-                    .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
-            .background(Color("bgColor3"))
-            .cornerRadius(10)
             
             Form{
                 Section(header: Text("Incomes")) {
@@ -93,18 +91,14 @@ struct BudgetView: View {
             }
 
             
-            NavigationLink(destination: InsightPage()) {
+            NavigationLink(destination: InsightPage(expenseData: ExpenseData())) {
                 Text("Get the Insights")
                     .font(.title2 .bold())
-                    .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: 40)
-            .background(Color("bgColor3"))
-            .cornerRadius(20)
         }
     }
 }
 
 #Preview {
-    BudgetView()
+    BudgetView(expenseData: ExpenseData())
 }

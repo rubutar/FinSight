@@ -10,6 +10,10 @@ import SwiftData
 
 struct EditExpenseView: View {
     @Bindable var expenseData: ExpenseData
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) private var dismiss  // Allows dismissing the view
+
+
     
     var body: some View {
         Form {
@@ -22,10 +26,20 @@ struct EditExpenseView: View {
                 Text("Shopping").tag("Shopping")
                 Text("Others").tag("Others")
             }
-            .pickerStyle(.menu)            }
-        
-        .navigationTitle("Edit Expense")
+            .pickerStyle(.menu)
+            Button("Save") {
+                addExpenseData(expenseData: expenseData)
+            }
+            .buttonStyle(.borderedProminent)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .navigationTitle("Add/Edit Expense")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    func addExpenseData(expenseData: ExpenseData) {
+        modelContext.insert(expenseData)  // Insert into SwiftData
+        try? modelContext.save()  // Save the context
+        dismiss()  // Dismiss the view after saving
     }
 }
 

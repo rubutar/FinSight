@@ -59,6 +59,6 @@ struct UpdateTransactionView: View {
 }
 
 #Preview {
-    TransactionPage()
+    TransactionPage(expenseData: ExpenseData())
     //        .modelContainer(for: Item.self, inMemory: true)
 }

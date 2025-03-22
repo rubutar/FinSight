@@ -2,6 +2,8 @@ import SwiftUI
 
 struct InsightPage: View {
     @State var currentMonth: String = GetCurrentMonthUtil()
+    @Bindable var expenseData: ExpenseData
+
     
     var body: some View {
         // Version 1 - white bacground
@@ -59,28 +61,27 @@ struct InsightPage: View {
                     Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
                 }
                 Section{
-                    NavigationLink(destination: TransactionPage()) {
-                        Text("View Transaction").foregroundColor(.blue)
+                    NavigationLink(destination: TransactionPage(expenseData: ExpenseData())) {
+                        Text("View Expenses").foregroundColor(.blue)
                     }
                 }
             }
         }.navigationTitle("Insight")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink() {
-                        // destination view to navigation to
-                        AddExpenseView(destinationNumber: 1)
-                    } label: {
-                        Image(systemName: "plus")
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    NavigationLink() {
+//                        EditExpenseView(expenseData: ExpenseData())
+//                    } label: {
+//                        Image(systemName: "plus")
+//                            .foregroundColor(.blue)
+//                    }
+//                }
+//            }
     }
 }
 
 #Preview {
-    InsightPage()
-        .modelContainer(for: ExpenseData.self, inMemory: true)
+    InsightPage(expenseData: ExpenseData())
+        .modelContainer(for: ExpenseData.self)
 }

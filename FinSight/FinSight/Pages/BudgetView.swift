@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct BudgetView: View {
-    @State private var rentAmount: String = ""
     @Bindable var expenseData: ExpenseData
+    @Bindable var budgetData: BudgetData
 
     var body: some View {
         Spacer()
@@ -32,13 +32,13 @@ struct BudgetView: View {
                 Section(header: Text("Incomes")) {
                     HStack{
                         Text("Stipend")
-                        TextField("Rp. 5.700.000", text: $rentAmount)
+                        TextField("Stipend", value: $budgetData.stipend, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
                     HStack{
-                        Text("Others")
-                        TextField("Rp. 0", text: $rentAmount)
+                        Text("Other Incomes")
+                        TextField("Other Incomes", value: $budgetData.otherIncomes, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
@@ -46,25 +46,25 @@ struct BudgetView: View {
                 Section(header: Text("Fixed Expenses")) {
                     HStack{
                         Text("Rent")
-                        TextField("Rp. 700.000", text: $rentAmount)
+                        TextField("Rent", value: $budgetData.rent, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
                     HStack{
                         Text("Water")
-                        TextField("Rp. 200.000", text: $rentAmount)
+                        TextField("Water", value: $budgetData.water, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
                     HStack{
                         Text("Electricity")
-                        TextField("Rp. 200.000", text: $rentAmount)
+                        TextField("Electricity", value: $budgetData.electricity, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
                     HStack{
                         Text("Others")
-                        TextField("Rp. 0", text: $rentAmount)
+                        TextField("Other Fixed Expenses", value: $budgetData.otherFixExpenses, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
@@ -74,7 +74,7 @@ struct BudgetView: View {
                 Section(header: Text("Savings")) {
                     HStack{
                         Text("Savings")
-                        TextField("Rp. 500.000", text: $rentAmount)
+                        TextField("Savings", value: $budgetData.savings, format: .currency(code: "IDR"))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                     }
@@ -83,7 +83,7 @@ struct BudgetView: View {
 
                 Section(header: Text("Budgets")) {
                     Text("Based on calculation, your monthly budget for the other expense will be:")
-                    Text("Rp. 3.500.000")
+                    Text("\((budgetData.monthlyBudget), format: .currency(code: "IDR"))")
                         .bold()
                         .font(.title)
                 }
@@ -99,6 +99,6 @@ struct BudgetView: View {
     }
 }
 
-#Preview {
-    BudgetView(expenseData: ExpenseData())
-}
+//#Preview {
+//    BudgetView(expenseData: ExpenseData(), budgetData: BudgetData())
+//}

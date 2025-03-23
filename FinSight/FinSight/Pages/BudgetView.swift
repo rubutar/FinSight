@@ -23,6 +23,8 @@ struct BudgetView: View {
     @State var savingAmount: Double = 500_000
     @State var monthlyBudget: Double = 3_500_000
     
+    @State private var greeting: String = "Hello world!"
+    
     // Placeholder
     var stipenPlaceholder: String = "Input Stipen"
     var otherIncomePlaceholder: String = "Input Others Income"
@@ -72,8 +74,15 @@ struct BudgetView: View {
                     .padding(.horizontal)
                 
                 VStack{
-                    TextFieldWithLabelDouble(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad)
-                    TextFieldWithLabelDouble(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad)
+                    
+                    TextFieldWithLabel2(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
+                    TextFieldWithLabel2(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
                 }
                 .padding()
                 .background(Color("bgColor5"))
@@ -88,10 +97,23 @@ struct BudgetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
-                    TextFieldWithLabelDouble(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue: $rentAmount,keyboardType: .decimalPad)
-                    TextFieldWithLabelDouble(label:"Water",inputPlaceholder: waterPlaceholder,inputValue: $waterAmount,keyboardType: .decimalPad)
-                    TextFieldWithLabelDouble(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue: $electricityAmount,keyboardType: .decimalPad)
-                    TextFieldWithLabelDouble(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue: $otherExpensesAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue: $rentAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Water",inputPlaceholder: waterPlaceholder,inputValue: $waterAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue: $electricityAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue: $otherExpensesAmount,keyboardType: .decimalPad)
+                    
+                    TextFieldWithLabel2(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue:$rentAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
+                    TextFieldWithLabel2(label:"Water",inputPlaceholder: waterPlaceholder,inputValue:$waterAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
+                    TextFieldWithLabel2(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue:$electricityAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
+                    TextFieldWithLabel2(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue:$otherExpensesAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
                 }
                 .padding()
                 .background(Color("bgColor5"))
@@ -106,7 +128,11 @@ struct BudgetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
-                    TextFieldWithLabelDouble(label:"Saving",inputPlaceholder: "Input Amount",inputValue: $savingAmount,keyboardType: .decimalPad)
+//                    TextFieldWithLabelDouble(label:"Saving",inputPlaceholder: "Input Amount",inputValue: $savingAmount,keyboardType: .decimalPad)
+                    
+                    TextFieldWithLabel2(label:"Saving",inputPlaceholder: savingPlaceholder,inputValue:$savingAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+                        updateBudget()
+                    })
                 }
                 .padding()
                 .background(Color("bgColor5"))

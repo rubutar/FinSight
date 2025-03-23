@@ -7,6 +7,7 @@ import Charts
 
 struct OneDimensionalBar: View {
     var isOverview: Bool
+    var currentMonth: String = GetCurrentMonthUtil()
 
     @State var data = DataUsageData.example
     @StateObject var expenseViewModel = ExpenseViewModel()
@@ -23,7 +24,7 @@ struct OneDimensionalBar: View {
         if isOverview {
             VStack {
                 HStack {
-                    Text("March")
+                    Text(currentMonth)
                     Spacer()
                     Text("Rp. \(expenseViewModel.totalExpenses, specifier: "%.1f") of Rp. \(budgetViewModel.monthlyBudget, specifier: "%.1f") used")
                         .foregroundColor(.secondary)

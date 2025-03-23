@@ -2,7 +2,6 @@ import SwiftUI
 
 struct InsightPage: View {
     @State var currentMonth: String = GetCurrentMonthUtil()
-    @Bindable var expenseData: ExpenseData
 
     
     var body: some View {
@@ -82,6 +81,6 @@ struct InsightPage: View {
 }
 
 #Preview {
-    InsightPage(expenseData: ExpenseData())
+    InsightPage()
         .modelContainer(for: ExpenseData.self)
 }

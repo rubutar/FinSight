@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BudgetView: View {
-    @Bindable var expenseData: ExpenseData
     @Bindable var budgetData: BudgetData
     @State private var showBudget = false // ✅ Controls visibility of Budgets section
 
@@ -82,14 +81,15 @@ struct BudgetView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
-                Button("Calculate Budget") {
-                    calculateMonthlyBudget()
-                }
-                .buttonStyle(.borderedProminent)
-                .frame(maxWidth: .infinity, alignment: .center)
 
-                if showBudget { // ✅ Show Budgets section after calculation
-                    Section(header: Text("Budgets")) {
+                Section(header: Text("Budgets")) {
+                    Button("Calculate Budget") {
+                        calculateMonthlyBudget()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    if showBudget { // ✅ Show Budgets section after calculation
                         Text("Based on calculation, your monthly budget for other expenses will be:")
                         Text(budgetData.monthlyBudget, format: .currency(code: "IDR"))
                             .bold()
@@ -99,7 +99,7 @@ struct BudgetView: View {
             }
 
             
-            NavigationLink(destination: InsightPage(expenseData: ExpenseData())) {
+            NavigationLink(destination: InsightPage()) {
                 Text("Get the Insights")
                     .font(.title2 .bold())
             }

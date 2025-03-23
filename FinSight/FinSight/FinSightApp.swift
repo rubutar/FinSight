@@ -6,14 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FinSightApp: App {
+    var sharedModelContainer: ModelContainer = {
+            let schema = Schema([
+                ExpenseData.self,
+                BudgetData.self,
+                Item.self,
+            ])
+            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+            do {
+                return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            } catch {
+                fatalError("Could not create ModelContainer: \(error)")
+            }
+        }()
+    
     var body: some Scene {
         WindowGroup {
 //            BudgetView()
-            TransactionPage()
-                .modelContainer(for: ExpenseData.self, inMemory: true)
+//            TransactionPage()
+//                .modelContainer(for: ExpenseData.self, inMemory: true)
+            BudgetView()
+                .modelContainer([sharedModelContainer])
         }
     }
 }

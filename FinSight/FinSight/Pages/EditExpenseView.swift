@@ -12,7 +12,7 @@ struct EditExpenseView: View {
     @Bindable var expenseData: ExpenseData
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss  // Allows dismissing the view
-
+    @State var path = [ExpenseData]()
 
     
     var body: some View {
@@ -39,6 +39,7 @@ struct EditExpenseView: View {
     func addExpenseData(expenseData: ExpenseData) {
         modelContext.insert(expenseData)  // Insert into SwiftData
         try? modelContext.save()  // Save the context
+//        path = [expenseData]
         dismiss()  // Dismiss the view after saving
     }
 }

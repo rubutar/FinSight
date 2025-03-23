@@ -10,6 +10,8 @@ import SwiftUI
 struct BudgetView: View {
     @Bindable var expenseData: ExpenseData
     @Bindable var budgetData: BudgetData
+    @State private var showBudget = false // ✅ Controls visibility of Budgets section
+
 
     var body: some View {
         Spacer()
@@ -80,14 +82,20 @@ struct BudgetView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
-
-                Section(header: Text("Budgets")) {
-                    Text("Based on calculation, your monthly budget for the other expense will be:")
-                    Text("\((budgetData.monthlyBudget), format: .currency(code: "IDR"))")
-                        .bold()
-                        .font(.title)
+                Button("Calculate Budget") {
+                    calculateMonthlyBudget()
                 }
-                .listRowInsets(EdgeInsets(top: 0, leading: 15, bottom: 1, trailing: 15))
+                .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                if showBudget { // ✅ Show Budgets section after calculation
+                    Section(header: Text("Budgets")) {
+                        Text("Based on calculation, your monthly budget for other expenses will be:")
+                        Text(budgetData.monthlyBudget, format: .currency(code: "IDR"))
+                            .bold()
+                            .font(.title)
+                    }
+                }
             }
 
             
@@ -96,6 +104,10 @@ struct BudgetView: View {
                     .font(.title2 .bold())
             }
         }
+    }
+    func calculateMonthlyBudget() {
+        budgetData.monthlyBudget = ((budgetData.stipend + budgetData.otherIncomes) - (budgetData.rent + budgetData.water + budgetData.electricity + budgetData.otherFixExpenses) - (budgetData.savings))
+        showBudget = true
     }
 }
 

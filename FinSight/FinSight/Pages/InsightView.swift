@@ -61,7 +61,7 @@ struct InsightPage: View {
                     Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
                 }
                 Section{
-                    NavigationLink(destination: TransactionPage(expenseData: ExpenseData())) {
+                    NavigationLink(destination: TransactionPage()) {
                         Text("View Expenses").foregroundColor(.blue)
                     }
                 }

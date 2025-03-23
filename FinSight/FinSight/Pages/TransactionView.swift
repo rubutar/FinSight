@@ -4,8 +4,8 @@ import SwiftData
 struct TransactionPage: View {
     @Environment(\.modelContext) var modelContext
     @Query var expensesData: [ExpenseData]
-    @State var path = [ExpenseData]()
-    @Bindable var expenseData: ExpenseData
+    @State var path : [ExpenseData] = []
+//    @Bindable var expenseData: ExpenseData
 
     
     var body: some View {
@@ -18,7 +18,7 @@ struct TransactionPage: View {
         //            }
         //        }.navigationTitle("Transaction")
         
-        NavigationStack(){
+        NavigationStack {
             List{
                 ForEach(expensesData) { expenseData in
                     NavigationLink(value: expenseData){
@@ -34,17 +34,17 @@ struct TransactionPage: View {
                 }
                 .onDelete(perform: deleteExpensesData)
             }
-            .navigationBarTitle(Text("List Expenses"))
-            .navigationDestination(for: ExpenseData.self) { expenseData in
-                EditExpenseView(expenseData: expenseData)
+            .navigationTitle("List Expenses")
+            .navigationDestination(for: ExpenseData.self) { expense in
+                            EditExpenseView(expenseData: expense)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        EditExpenseView(expenseData: ExpenseData())
+                        EditExpenseView(expenseData: ExpenseData())  // ✅ Navigate to new expense entry
                     } label: {
                         Image(systemName: "plus")
-                            .foregroundColor(.blue)
+                        .foregroundColor(.blue)
                     }
                 }
             }
@@ -52,27 +52,33 @@ struct TransactionPage: View {
     }
 
 
-//            func deleteExpensesData(_ indexSet: IndexSet) {
-//                for index in indexSet {
-//                    let expenseData = expensesData[index]
-//                    modelContext.delete(expenseData)
-//                }
-//            }
-    
-    // Delete function
-    func deleteExpensesData(at offsets: IndexSet) {
-        for index in offsets {
-            let expense = expensesData[index]
-            do {
-                try expense.modelContext?.delete(expense)
-            } catch {
-                print("Error deleting expense: \(error)")
-            }
+    func deleteExpensesData(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let expenseData = expensesData[index]
+            modelContext.delete(expenseData)
         }
     }
+    
+    
+//    func addSample() {
+//        let sample = ExpenseData(amount: 1000)
+//        modelContext.insert(sample)
+//    }
+    
+// Delete function
+//    func deleteExpensesData(at offsets: IndexSet) {
+//        for index in offsets {
+//            let expense = expensesData[index]
+//            do {
+//                try expense.modelContext?.delete(expense)
+//            } catch {
+//                print("Error deleting expense: \(error)")
+//            }
+//        }
+//    }
 
 }
-
-#Preview {
-    TransactionPage(expenseData: ExpenseData())
-}
+//
+//#Preview {
+//    TransactionPage(expenseData: ExpenseData())
+//}

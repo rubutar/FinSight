@@ -58,7 +58,7 @@ struct UpdateTransactionView: View {
     }
 }
 
-#Preview {
-    TransactionPage(expenseData: ExpenseData())
-    //        .modelContainer(for: Item.self, inMemory: true)
-}
+//#Preview {
+//    TransactionPage(expenseData: ExpenseData())
+//    //        .modelContainer(for: Item.self, inMemory: true)
+//}

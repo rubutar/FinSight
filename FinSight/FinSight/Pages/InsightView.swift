@@ -19,11 +19,11 @@ struct InsightPage: View {
             Text("Total Expenses: \(totalExpenses, format: .currency(code: "IDR"))")
                 .bold()
             ForEach(totalByCategory.sorted(by: { $0.key < $1.key }), id: \.key) { category, total in
+                var percentage: Double { total / totalExpenses * 100 }
                 HStack {
-                    Text(category)
+                    Text("\(category) \(percentage.rounded(.down), specifier: "%.0f")%")
                     Spacer()
                     Text("\(total, format: .currency(code: "IDR"))")
-                        .bold()
                 }
             }
             

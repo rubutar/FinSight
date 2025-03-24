@@ -264,8 +264,8 @@ struct BudgetView: View {
 //                printBudgetData()
                 // Check if there's data in the database when the view appears
                 if let firstItem = budgetData.first {
-                    print(budgetData)
                     // If data exists, set stipenAmount from the database
+                    print("tanggal di buat : \(firstItem.created_at)")
                     stipenAmount = firstItem.stipen
                     otherIncomeAmount = firstItem.income
                     rentAmount = firstItem.rent

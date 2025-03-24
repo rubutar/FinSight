@@ -4,10 +4,13 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct OneDimensionalBar: View {
     var isOverview: Bool
     var currentMonth: String = GetCurrentMonthUtil()
+    
+    @Query private var budgetData: [BudgetData]
 
     @State var data = DataUsageData.example
     @StateObject var expenseViewModel = ExpenseViewModel()
@@ -26,9 +29,17 @@ struct OneDimensionalBar: View {
                 HStack {
                     Text(currentMonth)
                     Spacer()
-                    Text("Rp. \(expenseViewModel.totalExpenses, specifier: "%.1f") of Rp. \(budgetViewModel.monthlyBudget, specifier: "%.1f") used")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
+                    ForEach(budgetData) { storedBudgetData in
+//                        Text("monthly_budget at \(storedBudgetData.monthly_budget)")
+                        
+                        Text("Rp. \(expenseViewModel.totalExpenses, specifier: "%.1f") of Rp. \(storedBudgetData.monthly_budget, specifier: "%.1f") used")
+                            .foregroundColor(.secondary)
+                            .font(.caption)
+//                        Text("Rp. \(expenseViewModel.totalExpenses, specifier: "%.1f") of Rp. \(budgetViewModel.monthlyBudget, specifier: "%.1f") used")
+//                            .foregroundColor(.secondary)
+//                            .font(.caption)
+                    }
+                    
                 }
                 chart
             }
@@ -128,8 +139,13 @@ extension OneDimensionalBar: AXChartDescriptorRepresentable {
 
 // MARK: - Preview
 
-struct OneDimensionalBar_Previews: PreviewProvider {
-    static var previews: some View {
-        OneDimensionalBar(isOverview: true)
-    }
+//struct OneDimensionalBar_Previews: PreviewProvider {
+//    static var previews: some View {
+//        OneDimensionalBar(isOverview: true)
+//    }
+//}
+
+#Preview {
+    BudgetView()
+        .modelContainer(for: ExpenseData.self, inMemory: true)
 }

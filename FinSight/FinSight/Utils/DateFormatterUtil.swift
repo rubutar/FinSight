@@ -27,3 +27,11 @@ struct DateFormatterUtil {
 func GetCurrentMonthUtil() -> String {
     return Date.now.formatted(.dateTime.month(.wide))
 }
+
+func isMonthLessThanCurrent(date: Date) -> Bool {
+        let calendar = Calendar.current
+        let currentMonth = calendar.component(.month, from: Date()) // Bulan saat ini
+        let dateMonth = calendar.component(.month, from: date) // Bulan dari tanggal yang diberikan
+        
+        return dateMonth < currentMonth
+    }

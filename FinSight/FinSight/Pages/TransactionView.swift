@@ -5,13 +5,7 @@ struct TransactionPage: View {
     @Environment(\.modelContext) var modelContext
     @Query var expensesData: [ExpenseData]
     @State private var showAddExpenseView = false  // State to control AddExpenseView presentation
-    var totalExpenses: Double {
-        expensesData.reduce(0) { $0 + $1.amount }
-    }
-    var totalByCategory: [String: Double] {
-        Dictionary(grouping: expensesData, by: { $0.category })
-            .mapValues { $0.reduce(0) { $0 + $1.amount } }
-    }
+
     
     var body: some View {
         List {
@@ -39,19 +33,6 @@ struct TransactionPage: View {
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.blue)
-                }
-            }
-        }
-        Section(header: Text("Summary")) {
-            Text("Total Expenses: \(totalExpenses, format: .currency(code: "IDR"))")
-                .bold()
-
-            ForEach(totalByCategory.sorted(by: { $0.key < $1.key }), id: \.key) { category, total in
-                HStack {
-                    Text(category)
-                    Spacer()
-                    Text("\(total, format: .currency(code: "IDR"))")
-                        .bold()
                 }
             }
         }

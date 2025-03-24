@@ -3,11 +3,31 @@ import SwiftData
 
 struct InsightPage: View {
     @Query private var budgetData: [BudgetData]
+    @Query var expensesData: [ExpenseData]
+    var totalExpenses: Double {
+        expensesData.reduce(0) { $0 + $1.amount }
+    }
+    var totalByCategory: [String: Double] {
+        Dictionary(grouping: expensesData, by: { $0.category })
+            .mapValues { $0.reduce(0) { $0 + $1.amount } }
+    }
     
     var body: some View {
         // Version 1 - white bacground
         ScrollView{
             OneDimensionalBar(isOverview: true).padding()
+            Text("Total Expenses: \(totalExpenses, format: .currency(code: "IDR"))")
+                .bold()
+            ForEach(totalByCategory.sorted(by: { $0.key < $1.key }), id: \.key) { category, total in
+                HStack {
+                    Text(category)
+                    Spacer()
+                    Text("\(total, format: .currency(code: "IDR"))")
+                        .bold()
+                }
+            }
+            
+            
             ForEach(0..<1) { number in
                 GroupBox(label: Text("Motivation")) {
                     Text("Stay focus on the plan")
@@ -26,7 +46,7 @@ struct InsightPage: View {
             //                }.buttonStyle(.bordered)
             
             
-        }.navigationTitle("Insight")
+        }.navigationTitle("Insights")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     //                        Button(action: {
@@ -82,5 +102,4 @@ struct InsightPage: View {
 
 #Preview {
     InsightPage()
-    //        .modelContainer(for: ExpenseData.self, inMemory: true)
 }

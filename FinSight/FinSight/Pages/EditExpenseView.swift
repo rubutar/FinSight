@@ -33,7 +33,6 @@ struct EditExpenseView: View {
                 Button("Save") {
                     saveExpense()
                 }
-                .buttonStyle(.borderedProminent)
             }
         }
     }

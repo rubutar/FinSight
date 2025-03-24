@@ -39,13 +39,7 @@ struct BudgetView: View {
     var body: some View {
         NavigationStack(){
             ScrollView{
-                VStack{                    
-                    Image(systemName:"antenna.radiowaves.left.and.right")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .padding()
-                        .foregroundColor(.white)
+                VStack{
                     Text("FinSight")
                         .foregroundStyle(Color(.white))
                         .font(.title)
@@ -89,7 +83,7 @@ struct BudgetView: View {
                     
                     // v3
                     HStack {
-                        Text("Stipen")
+                        Text("Stipend")
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
@@ -220,7 +214,7 @@ struct BudgetView: View {
                     
                     // v3
                     HStack {
-                        Text("SAving")
+                        Text("Savings")
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()

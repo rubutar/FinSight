@@ -4,20 +4,24 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct OneDimensionalBar: View {
     var isOverview: Bool
     var currentMonth: String = GetCurrentMonthUtil()
-
-    @State var data = DataUsageData.example
-    @StateObject var expenseViewModel = ExpenseViewModel()
-    @StateObject var budgetViewModel = BudgetViewModel()
-    @State private var showLegend = true
-    
-    private var totalSize: Double {
-        data
-            .reduce(0) { $0 + $1.amount }
+    @Query var expensesData: [ExpenseData]
+    @Query var budgetData: [BudgetData]
+    var totalExpenses: Double {
+        expensesData.reduce(0) { $0 + $1.amount }
     }
+    var totalByCategory: [String: Double] {
+        Dictionary(grouping: expensesData, by: { $0.category })
+            .mapValues { $0.reduce(0) { $0 + $1.amount } }
+    }
+    var monthlyBudget: Double {
+        budgetData.first?.monthly_budget ?? 0
+    }
+    @State private var showLegend = true
 
 
     var body: some View {
@@ -26,7 +30,7 @@ struct OneDimensionalBar: View {
                 HStack {
                     Text(currentMonth)
                     Spacer()
-                    Text("Rp. \(expenseViewModel.totalExpenses, specifier: "%.1f") of Rp. \(budgetViewModel.monthlyBudget, specifier: "%.1f") used")
+                    Text("Rp. \(totalExpenses, specifier: "%.0f") of Rp. \(monthlyBudget, specifier: "%.0f") used")
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
@@ -39,8 +43,9 @@ struct OneDimensionalBar: View {
                         HStack {
                             Text("Maret")
                             Spacer()
-                            Text("Rp. 2.500.000 of Rp. 4.000.000 used")
+                            Text("Rp. \(totalExpenses, specifier: "%.0f") of Rp. \(monthlyBudget, specifier: "%.0f") used")
                                 .foregroundColor(.secondary)
+                                .font(.caption)
                         }
                         chart
                     }
@@ -53,7 +58,7 @@ struct OneDimensionalBar: View {
     }
 
     private var chart: some View {
-        Chart(data, id: \.category) { element in
+        Chart(expensesData, id: \.category) { element in
             Plot {
                 BarMark(
                     x: .value("Data Size", element.amount)
@@ -61,7 +66,7 @@ struct OneDimensionalBar: View {
                 .foregroundStyle(by: .value("Data Category", element.category))
             }
             .accessibilityLabel(element.category)
-            .accessibilityValue("\(element.amount, specifier: "%.1f") GB")
+            .accessibilityValue("Rp. \(element.amount, specifier: "%.1f")")
             .accessibilityHidden(isOverview)
         }
         .chartPlotStyle { plotArea in
@@ -75,7 +80,7 @@ struct OneDimensionalBar: View {
         }
         .accessibilityChartDescriptor(self)
         .chartXAxis(.hidden)
-        .chartXScale(domain: 0...4000000)
+        .chartXScale(domain: 0...Int(monthlyBudget))
         .chartYScale(range: .plotDimension(endPadding: -8))
         .chartLegend(position: .bottom, spacing: 8)
         .chartLegend(showLegend ? .visible : .hidden)
@@ -93,12 +98,12 @@ struct OneDimensionalBar: View {
 
 extension OneDimensionalBar: AXChartDescriptorRepresentable {
     func makeChartDescriptor() -> AXChartDescriptor {
-        let min = data.map(\.amount).min() ?? 0
-        let max = data.map(\.amount).max() ?? 0
+        let min = expensesData.map(\.amount).min() ?? 0
+        let max = expensesData.map(\.amount).max() ?? 0
 
         let xAxis = AXCategoricalDataAxisDescriptor(
             title: "Category",
-            categoryOrder: data.map { $0.category }
+            categoryOrder: expensesData.map { $0.category }
         )
 
         let yAxis = AXNumericDataAxisDescriptor(
@@ -110,7 +115,7 @@ extension OneDimensionalBar: AXChartDescriptorRepresentable {
         let series = AXDataSeriesDescriptor(
             name: "Data Usage Example",
             isContinuous: false,
-            dataPoints: data.map {
+            dataPoints: expensesData.map {
                 .init(x: $0.category, y: $0.amount)
             }
         )
@@ -130,6 +135,6 @@ extension OneDimensionalBar: AXChartDescriptorRepresentable {
 
 struct OneDimensionalBar_Previews: PreviewProvider {
     static var previews: some View {
-        OneDimensionalBar(isOverview: true)
+        OneDimensionalBar(isOverview: false)
     }
 }

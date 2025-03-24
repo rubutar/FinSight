@@ -1,46 +1,44 @@
 import SwiftUI
 
 struct AddExpenseView: View {
-    let destinationNumber: Int
-    @State var inputAmount: String = ""
-    @State var inputDate: Date = Date()
-    @State var inputNote: String = ""
-    @State private var date = Date()
-    @State var isSaved: Bool = false
-    @State private var selectedCategory: String = "ctg1"
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    @Bindable var expenseData: ExpenseData
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    Picker("Category", selection: $selectedCategory) {
-                        ForEach(arrayExpensesCategory) { itemCategory in
-                            Text("\(itemCategory.label)").tag(itemCategory.id)
-                        }
-                    }
-                    TextFieldWithLabel(label:"Amount",inputPlaceholder: "Input Amount",inputValue: $inputAmount)
-                    TextFieldWithLabel(label:"Note",inputPlaceholder: "Input Note",inputValue: $inputNote)
-                    TextFieldWithLabelDate(label:"Date",inputDate: $date)
-                }
-                if isSaved {
-                    Text(" Function save belom jadi \n\n Category: \(selectedCategory) \n Amount: \(inputAmount) \n Note: \(inputNote) \n Date: \(date)")
-                }
+        Form {
+            TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR"))
+            TextField("Note", text: $expenseData.note)
+            DatePicker("Date", selection: $expenseData.date)
+            Picker("Category", selection: $expenseData.category) {
+                Text("Food").tag("Food")
+                Text("Transport").tag("Transport")
+                Text("Shopping").tag("Shopping")
+                Text("Others").tag("Others")
             }
-        }.navigationTitle("Add Expenses")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        isSaved = true
-                    }
+            .pickerStyle(.menu)
+        }
+        .navigationTitle("Add Expense")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    saveExpense()
                 }
+                .buttonStyle(.borderedProminent)
             }
+        }
+    }
+    func saveExpense() {
+        modelContext.insert(expenseData)  // Insert into SwiftData
+        try? modelContext.save()  // Save changes
+        dismiss()  // Dismiss after saving
     }
 }
 
 
 
 #Preview {
-    AddExpenseView(destinationNumber: 1)
+    AddExpenseView(expenseData: ExpenseData())
     //        .modelContainer(for: Item.self, inMemory: true)
 }

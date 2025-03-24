@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct EditExpenseView: View {
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
     @Bindable var expenseData: ExpenseData
     
     var body: some View {
@@ -22,10 +24,23 @@ struct EditExpenseView: View {
                 Text("Shopping").tag("Shopping")
                 Text("Others").tag("Others")
             }
-            .pickerStyle(.menu)            }
-        
-        .navigationTitle("Edit Expense")
+            .pickerStyle(.menu)
+        }
+        .navigationTitle("Add Expense")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    saveExpense()
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+    }
+    func saveExpense() {
+        modelContext.insert(expenseData)  // Insert into SwiftData
+        try? modelContext.save()  // Save changes
+        dismiss()  // Dismiss after saving
     }
 }
 

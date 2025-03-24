@@ -47,56 +47,17 @@ struct InsightPage: View {
             
             
         }.navigationTitle("Insights")
+            .navigationBarBackButtonHidden(true)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    //                        Button(action: {
-                    //                            // Code for button action goes here
-                    //                        }) {
-                    //                            Image(systemName: "plus.circle")
-                    //                        }
-//                    NavigationLink() {
-//                        // destination view to navigation to
-//                        AddExpenseView(destinationNumber: 1)
-//                    } label: {
-//                        Image(systemName: "plus")
-//                            .foregroundColor(.blue)
-//                        
-//                    }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: BudgetView()){
+                        HStack {
+                            Image(systemName: "chevron.backward")
+                            Text("Back")
+                        }
+                    }
                 }
             }
-        
-        // Version 2 - grey backgroud
-        //        NavigationStack {
-        //            Form{
-        //                Section{
-        //                    OneDimensionalBar(isOverview: true)
-        //                }
-        //
-        //                Section{
-        //                    Text("Stay focus on the plan")
-        //                }
-        //                Section{
-        //                    Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
-        //                }
-        //                Section{
-        //                    NavigationLink(destination: TransactionPage()) {
-        //                        Text("View Transaction").foregroundColor(.blue)
-        //                    }
-        //                }
-        //            }
-        //        }.navigationTitle("Insight")
-        //            .navigationBarTitleDisplayMode(.large)
-        //            .toolbar {
-        //                ToolbarItem(placement: .navigationBarTrailing) {
-        //                    NavigationLink() {
-        //                        // destination view to navigation to
-        //                        AddExpenseView(destinationNumber: 1)
-        //                    } label: {
-        //                        Image(systemName: "plus")
-        //                            .foregroundColor(.blue)
-        //                    }
-        //                }
-        //            }
     }
 }
 

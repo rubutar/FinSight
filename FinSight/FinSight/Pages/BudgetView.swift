@@ -300,6 +300,7 @@ struct BudgetView: View {
             .navigationDestination(isPresented: $showInsightView) {
                 InsightPage()
             }
+            .navigationBarBackButtonHidden(true)
         }
         
     }

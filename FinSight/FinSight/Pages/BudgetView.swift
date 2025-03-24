@@ -24,6 +24,7 @@ struct BudgetView: View {
     @State var monthlyBudget: Double = 3_500_000
     
     @State private var greeting: String = "Hello world!"
+    @State private var showInsightView = false
     
     // Placeholder
     var stipenPlaceholder: String = "Input Stipen"
@@ -74,15 +75,45 @@ struct BudgetView: View {
                     .padding(.horizontal)
                 
                 VStack{
+                    // v1
 //                    TextFieldWithLabelDouble(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad)
 //                    TextFieldWithLabelDouble(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad)
                     
-                    TextFieldWithLabel2(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
-                    TextFieldWithLabel2(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
+                    // v2
+//                    TextFieldWithLabel2(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+//                    TextFieldWithLabel2(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+                    
+                    // v3
+                    HStack {
+                        Text("Stipen")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(stipenPlaceholder, value: $stipenAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
+                    HStack {
+                        Text("Income")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(otherIncomePlaceholder, value: $otherIncomeAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
                 }
                 .padding()
                 .background(Color("bgColor5"))
@@ -102,18 +133,69 @@ struct BudgetView: View {
 //                    TextFieldWithLabelDouble(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue: $electricityAmount,keyboardType: .decimalPad)
 //                    TextFieldWithLabelDouble(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue: $otherExpensesAmount,keyboardType: .decimalPad)
                     
-                    TextFieldWithLabel2(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue:$rentAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
-                    TextFieldWithLabel2(label:"Water",inputPlaceholder: waterPlaceholder,inputValue:$waterAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
-                    TextFieldWithLabel2(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue:$electricityAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
-                    TextFieldWithLabel2(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue:$otherExpensesAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
+                    // v2
+//                    TextFieldWithLabel2(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue:$rentAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+//                    TextFieldWithLabel2(label:"Water",inputPlaceholder: waterPlaceholder,inputValue:$waterAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+//                    TextFieldWithLabel2(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue:$electricityAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+//                    TextFieldWithLabel2(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue:$otherExpensesAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+                    
+                    // v3
+                    HStack {
+                        Text("Rent")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(rentPlaceholder, value: $rentAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
+                    HStack {
+                        Text("Water")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(waterPlaceholder, value: $waterAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
+                    HStack {
+                        Text("Electric")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(electricityPlaceholder, value: $electricityAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
+                    HStack {
+                        Text("Others")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(otherExpensesPlaceholder, value: $otherExpensesAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
                 }
                 .padding()
                 .background(Color("bgColor5"))
@@ -128,11 +210,27 @@ struct BudgetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
+                    // v1
 //                    TextFieldWithLabelDouble(label:"Saving",inputPlaceholder: "Input Amount",inputValue: $savingAmount,keyboardType: .decimalPad)
                     
-                    TextFieldWithLabel2(label:"Saving",inputPlaceholder: savingPlaceholder,inputValue:$savingAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-                        updateBudget()
-                    })
+                    // v2
+//                    TextFieldWithLabel2(label:"Saving",inputPlaceholder: savingPlaceholder,inputValue:$savingAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
+//                        updateBudget()
+//                    })
+                    
+                    // v3
+                    HStack {
+                        Text("SAving")
+                            .frame(width: 70, alignment: .leading)
+                            .font(.body)
+                        Spacer()
+                        TextField(savingPlaceholder, value: $savingAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+                            .onSubmit {
+                                updateBudget()
+                            }
+                            .multilineTextAlignment(.trailing)
+                    }
                 }
                 .padding()
                 .background(Color("bgColor5"))
@@ -157,8 +255,8 @@ struct BudgetView: View {
                 
                 Spacer()
                 Spacer()
-                Button("Get the Insights") {
-                    updateBudget()
+                Button(action: { showInsightView = true }) {
+                    Text("Get the Insights")
                 }
                 .foregroundStyle(Color(.white))
                 .font(.title2 .bold())
@@ -188,10 +286,10 @@ struct BudgetView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink("Next"){
-                        InsightPage()
-                    }.foregroundStyle(Color("bgThemeGreen"))
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    NavigationLink("Next"){
+//                        InsightPage()
+//                    }.foregroundStyle(Color("bgThemeGreen"))
 //                    HStack{
 //                        Button(action: updateBudget) {
 //                            Label("Add Item", systemImage: "square.and.arrow.down")
@@ -203,7 +301,10 @@ struct BudgetView: View {
 //                            Label("Add Item", systemImage: "plus")
 //                        }
 //                    }
-                }
+//                }
+            }
+            .navigationDestination(isPresented: $showInsightView) {
+                InsightPage()
             }
         }
         
@@ -259,7 +360,7 @@ struct BudgetView: View {
         }
     }
 }
-//
-//#Preview {
-//    BudgetView()
-//}
+
+#Preview {
+    BudgetView()
+}

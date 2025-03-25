@@ -73,7 +73,7 @@ struct InsightPage: View {
                         Text("\(total, format: .currency(code: "IDR"))")
                             .font(.caption2)
                             .bold()
-                            .foregroundColor(categoryColor(category))
+//                            .foregroundColor(categoryColor(category))
                     }
                     .padding(6)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -115,8 +115,8 @@ struct InsightPage: View {
             }.onAppear(){
                 MotivationInsight()
             }
+        
     }
-<<<<<<< HEAD
     
     func MotivationInsight() -> String{
         let weeklyBudget = monthlyBudget/4
@@ -167,17 +167,8 @@ struct InsightPage: View {
     }
     
     
-=======
-func categoryColor(_ category: String) -> Color {
-    switch category {
-    case "Food": return Color.blue
-    case "Shopping": return Color.green
-    case "Transport": return Color.orange
-    default: return Color.purple
-    }
-}
 
->>>>>>> f64789e716f0d193dd30d8e95240b40248826641
+
 }
 
 #Preview {

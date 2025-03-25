@@ -25,6 +25,7 @@ struct BudgetView: View {
     
     @State private var greeting: String = "Hello world!"
     @State private var showInsightView = false
+    @State private var isBudgetNegative: Bool = false
     
     // Placeholder
     var stipenPlaceholder: String = "Input Stipen"
@@ -57,31 +58,18 @@ struct BudgetView: View {
                 
                 Spacer()
                 Spacer()
-        //------------- check stored data
-//                ForEach(budgetData) { storedBudgetData in
-//                    Text("monthly_budget at \(storedBudgetData.monthly_budget)")
-//                }
-//                Text("Incomes \(budgetData.count) ")
-        //-------------
+                //------------- check stored data
+                //                ForEach(budgetData) { storedBudgetData in
+                //                    Text("monthly_budget at \(storedBudgetData.monthly_budget)")
+                //                }
+                //                Text("Incomes \(budgetData.count) ")
+                //-------------
                 Text("Incomes")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 
                 VStack{
-                    // v1
-//                    TextFieldWithLabelDouble(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad)
-//                    TextFieldWithLabelDouble(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad)
-                    
-                    // v2
-//                    TextFieldWithLabel2(label:"Stipend",inputPlaceholder: stipenPlaceholder,inputValue:$stipenAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-//                    TextFieldWithLabel2(label:"Income",inputPlaceholder: otherIncomePlaceholder,inputValue:$otherIncomeAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-                    
-                    // v3
                     HStack {
                         Text("Stipend")
                             .frame(width: 70, alignment: .leading)
@@ -122,26 +110,6 @@ struct BudgetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
-//                    TextFieldWithLabelDouble(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue: $rentAmount,keyboardType: .decimalPad)
-//                    TextFieldWithLabelDouble(label:"Water",inputPlaceholder: waterPlaceholder,inputValue: $waterAmount,keyboardType: .decimalPad)
-//                    TextFieldWithLabelDouble(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue: $electricityAmount,keyboardType: .decimalPad)
-//                    TextFieldWithLabelDouble(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue: $otherExpensesAmount,keyboardType: .decimalPad)
-                    
-                    // v2
-//                    TextFieldWithLabel2(label:"Rent",inputPlaceholder: rentPlaceholder,inputValue:$rentAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-//                    TextFieldWithLabel2(label:"Water",inputPlaceholder: waterPlaceholder,inputValue:$waterAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-//                    TextFieldWithLabel2(label:"Electric",inputPlaceholder: electricityPlaceholder,inputValue:$electricityAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-//                    TextFieldWithLabel2(label:"Others",inputPlaceholder: otherExpensesPlaceholder,inputValue:$otherExpensesAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-                    
-                    // v3
                     HStack {
                         Text("Rent")
                             .frame(width: 70, alignment: .leading)
@@ -204,15 +172,6 @@ struct BudgetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
-                    // v1
-//                    TextFieldWithLabelDouble(label:"Saving",inputPlaceholder: "Input Amount",inputValue: $savingAmount,keyboardType: .decimalPad)
-                    
-                    // v2
-//                    TextFieldWithLabel2(label:"Saving",inputPlaceholder: savingPlaceholder,inputValue:$savingAmount,keyboardType: .decimalPad, onEditingChanged: { _ in
-//                        updateBudget()
-//                    })
-                    
-                    // v3
                     HStack {
                         Text("Savings")
                             .frame(width: 70, alignment: .leading)
@@ -246,22 +205,31 @@ struct BudgetView: View {
                 .cornerRadius(10)
                 .padding(.horizontal)
                 
+                Button(action: updateBudget) {
+                    Text("Calculate")
+                }.foregroundStyle(Color(.white))
+                    .font(.title2 .bold())
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color("bgThemeGreen"))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
                 
                 Spacer()
                 Spacer()
-                Button(action: { showInsightView = true }) {
+                Button(action: validate) {
                     Text("Get the Insights")
-                }
-                .foregroundStyle(Color(.white))
-                .font(.title2 .bold())
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color("bgThemeGreen"))
-                .cornerRadius(10)
-                .padding(.horizontal)
+                }.foregroundStyle(Color(.white))
+                    .font(.title2 .bold())
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color("bgThemeGreen"))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+                
             }
             .onAppear {
-//                printBudgetData()
+                //                printBudgetData()
                 // Check if there's data in the database when the view appears
                 if let firstItem = budgetData.first {
                     // If data exists, set stipenAmount from the database
@@ -280,53 +248,66 @@ struct BudgetView: View {
                 }
             }
             .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    NavigationLink("Next"){
-//                        InsightPage()
-//                    }.foregroundStyle(Color("bgThemeGreen"))
-//                    HStack{
-//                        Button(action: updateBudget) {
-//                            Label("Add Item", systemImage: "square.and.arrow.down")
-//                        }
-//                        Button(action: deleteAllData) {
-//                            Label("Add Item", systemImage: "minus.circle")
-//                        }
-//                        Button(action: addBudget) {
-//                            Label("Add Item", systemImage: "plus")
-//                        }
-//                    }
-//                }
+                //                ToolbarItem(placement: .navigationBarTrailing) {
+                //                    NavigationLink("Next"){
+                //                        InsightPage()
+                //                    }.foregroundStyle(Color("bgThemeGreen"))
+                //                    HStack{
+                //                        Button(action: updateBudget) {
+                //                            Label("Add Item", systemImage: "square.and.arrow.down")
+                //                        }
+                //                        Button(action: deleteAllData) {
+                //                            Label("Add Item", systemImage: "minus.circle")
+                //                        }
+                //                        Button(action: addBudget) {
+                //                            Label("Add Item", systemImage: "plus")
+                //                        }
+                //                    }
+                //                }
             }
             .navigationDestination(isPresented: $showInsightView) {
                 InsightPage()
             }
             .navigationBarBackButtonHidden(true)
-        }
+        }.alert("Budget Cannot Be Negative",isPresented: $isBudgetNegative, actions:{
+            Button("OK") {}
+        },message: {
+            Text("To ensure accurate financial tracking, please set your budget to a positive value. Negative budgets can lead to incorrect calculations.")
+        })
         
     }
-    
+    func validate(){
+        if Int(monthlyBudget) < 0 {
+            isBudgetNegative = true
+        } else {
+            print("data positif")
+            showInsightView = true
+            isBudgetNegative = false
+            
+        }
+    }
     func printBudgetData() {
-            if budgetData.isEmpty {
-                print("No data found in budgetData")
-            } else {
-                for (index, data) in budgetData.enumerated() {
-                    print("BudgetData \(index + 1): \(data)")
-                }
+        if budgetData.isEmpty {
+            print("No data found in budgetData")
+        } else {
+            for (index, data) in budgetData.enumerated() {
+                print("BudgetData \(index + 1): \(data)")
             }
         }
+    }
     
     func updateBudget(){
-            if let firstItem = budgetData.first{
-                monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount, waterAmount: waterAmount, electricityAmount: electricityAmount, otherExpensesAmount: otherExpensesAmount, savingAmount: savingAmount)
-                
-                firstItem.stipen = stipenAmount
-                firstItem.income = otherIncomeAmount
-                firstItem.rent = rentAmount
-                firstItem.water = waterAmount
-                firstItem.electricity = electricityAmount
-                firstItem.others = otherExpensesAmount
-                firstItem.savings = savingAmount
-                firstItem.monthly_budget = monthlyBudget
+        if let firstItem = budgetData.first{
+            monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount, waterAmount: waterAmount, electricityAmount: electricityAmount, otherExpensesAmount: otherExpensesAmount, savingAmount: savingAmount)
+            
+            firstItem.stipen = stipenAmount
+            firstItem.income = otherIncomeAmount
+            firstItem.rent = rentAmount
+            firstItem.water = waterAmount
+            firstItem.electricity = electricityAmount
+            firstItem.others = otherExpensesAmount
+            firstItem.savings = savingAmount
+            firstItem.monthly_budget = monthlyBudget
         } else {
             addBudget()
         }

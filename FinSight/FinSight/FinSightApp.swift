@@ -30,7 +30,8 @@ struct FinSightApp: App {
 //            BudgetView()
 //            TransactionPage()
 //                .modelContainer(for: ExpenseData.self, inMemory: true)
-            MainView()
+//            MainView()
+            SplashScreenView()
                 .modelContainer(sharedModelContainer)
         }
     }

@@ -4,6 +4,16 @@ import SwiftData
 struct InsightPage: View {
     @Query private var budgetData: [BudgetData]
     @Query var expensesData: [ExpenseData]
+    @State var messageInsight : String = ""
+    
+    var savingBudget: Double {
+        budgetData.first?.savings ?? 0
+    }
+    
+    var monthlyBudget: Double {
+        budgetData.first?.monthly_budget ?? 0
+    }
+    
     var totalExpenses: Double {
         expensesData.reduce(0) { $0 + $1.amount }
     }
@@ -11,6 +21,34 @@ struct InsightPage: View {
         Dictionary(grouping: expensesData, by: { $0.category })
             .mapValues { $0.reduce(0) { $0 + $1.amount } }
     }
+    
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter
+    }
+    
+    var totalByWeekOfMonth: [String: Double] {
+        let calendar = Calendar.current
+        let groupedByWeek = Dictionary(grouping: expensesData) { transaction -> String in
+            let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: transaction.date)!.start
+            return dateFormatter.string(from: startOfWeek)
+        }
+        
+        // Calculate the total for each week
+        let weeklyTotals = groupedByWeek.mapValues { transactionsInWeek -> Double in
+            transactionsInWeek.reduce(0) { $0 + $1.amount }
+        }
+        print("weeklyTotals: \(weeklyTotals)")
+        // Print the results
+//        for (week, total) in weeklyTotals {
+//            print("Week starting \(week): Total = \(total)")
+//        }
+//        print(Array(weeklyTotals)[2])
+        return weeklyTotals
+    }
+    
+    
     
     var body: some View {
         // Version 1 - white bacground
@@ -30,7 +68,7 @@ struct InsightPage: View {
             
             ForEach(0..<1) { number in
                 GroupBox(label: Text("Motivation")) {
-                    Text("Stay focus on the plan")
+                    Text("\(messageInsight)")
                 }.padding()
                 GroupBox(label: Text("Summary")) {
                     Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
@@ -57,8 +95,60 @@ struct InsightPage: View {
                         }
                     }
                 }
+            }.onAppear(){
+                MotivationInsight()
             }
     }
+    
+    func MotivationInsight() -> String{
+        let weeklyBudget = monthlyBudget/4
+        var totalExpenseWeek1 = 0.0
+        var totalExpenseWeek2 = 0.0
+        var totalExpenseWeek3 = 0.0
+        var totalExpenseWeek4 = 0.0
+        let monthlyBudgetandsaving = monthlyBudget - savingBudget
+        let totalUntilWeek3 = totalExpenseWeek1 + totalExpenseWeek2 + totalExpenseWeek3
+        let totalUntilWeek4 = totalExpenseWeek1 + totalExpenseWeek2 + totalExpenseWeek3 + totalExpenseWeek4
+        
+        if !totalByWeekOfMonth.isEmpty {
+             totalExpenseWeek1 = Array(totalByWeekOfMonth)[0].value
+//             totalExpenseWeek2 = Array(totalByWeekOfMonth)[1].value
+//             totalExpenseWeek3 = Array(totalByWeekOfMonth)[1].value
+//             totalExpenseWeek4 = Array(totalByWeekOfMonth)[1].value
+        }
+        
+        if totalExpenses.isZero {
+            // belum ada expense
+            messageInsight = "Let's start recording your expenses. Keep up the good habit!"
+        } else if totalExpenseWeek1 > weeklyBudget {
+            // week 1
+            messageInsight = "Wow, in Week 1 you are overspending! Try adjusting your spending habits so you don't run out of budget too soon."
+        } else if (totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) {
+            // week 2
+            messageInsight = "You’ve overspent for two weeks in a row! If this continues, you may run out of money before the month ends. Try cutting down on non-essential expenses."
+        } else if ((totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) && (totalExpenseWeek3 > weeklyBudget)){
+            // week 3
+            if totalUntilWeek3 > monthlyBudget {
+                messageInsight = "You’ve overspent for three weeks! Be extra careful in the last week to stay within your budget."
+            }
+        } else if ((totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) && (totalExpenseWeek3 > weeklyBudget)) {
+            // week 4
+            if totalUntilWeek4 > monthlyBudget {
+                messageInsight = "You’ve exceeded your monthly budget, and there's still one more week before your stipend arrives. Time to be extra frugal!"
+            }
+        } else if totalExpenses < monthlyBudgetandsaving {
+            // surplus
+            messageInsight = "Great job! You have leftover budget this month. Consider adding it to your savings or investing for future financial goals."
+        } else if totalExpenses == monthlyBudget {
+            messageInsight = "Congratulations! You managed to balance your spending perfectly this month. Keep up the great budgeting habits!"
+        } else {
+            messageInsight = ""
+        }
+        print("messageInsight \(messageInsight)")
+        return messageInsight
+    }
+    
+    
 }
 
 #Preview {

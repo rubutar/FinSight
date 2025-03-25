@@ -35,3 +35,21 @@ func isMonthLessThanCurrent(date: Date) -> Bool {
         
         return dateMonth < currentMonth
     }
+
+var startOfMonth: Date {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.year, .month], from: Date())
+    return calendar.date(from: components) ?? Date()
+}
+
+var endOfMonth: Date {
+    let calendar = Calendar.current
+    let nextMonth = calendar.date(byAdding: .month, value: 1, to: startOfMonth) ?? Date()
+    return calendar.date(byAdding: .day, value: -1, to: nextMonth) ?? Date()
+}
+
+func countDaysInRange(startOfMonth: Date, endOfMonth: Date) -> Int {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.day], from: startOfMonth, to: endOfMonth)
+    return components.day ?? 0
+}

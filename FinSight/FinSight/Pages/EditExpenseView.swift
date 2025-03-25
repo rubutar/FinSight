@@ -17,7 +17,8 @@ struct EditExpenseView: View {
         Form {
             TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR"))
             TextField("Note", text: $expenseData.note)
-            DatePicker("Date", selection: $expenseData.date)
+            DatePicker("Date", selection: $expenseData.date, displayedComponents: .date)
+                .datePickerStyle(.compact)
             Picker("Category", selection: $expenseData.category) {
                 Text("Food").tag("Food")
                 Text("Transport").tag("Transport")
@@ -26,7 +27,7 @@ struct EditExpenseView: View {
             }
             .pickerStyle(.menu)
         }
-        .navigationTitle("Add Expense")
+        .navigationTitle("Edit Expense")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

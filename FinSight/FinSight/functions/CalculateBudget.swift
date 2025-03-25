@@ -9,3 +9,4 @@ func CalculateBudget(
 ) -> Double {
     return( (stipenAmount + otherIncomeAmount) - (rentAmount+waterAmount+electricityAmount+otherExpensesAmount+otherExpensesAmount+savingAmount)
 )}
+

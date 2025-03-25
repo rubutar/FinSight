@@ -73,7 +73,7 @@ struct InsightPage: View {
                         Text("\(total, format: .currency(code: "IDR"))")
                             .font(.caption2)
                             .bold()
-//                            .foregroundColor(categoryColor(category))
+                            .foregroundColor(categoryColor(category))
                     }
                     .padding(6)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -166,9 +166,15 @@ struct InsightPage: View {
         return messageInsight
     }
     
-    
-
-
+    // Function to give each category a fixed color
+    func categoryColor(_ category: String) -> Color {
+        switch category {
+        case "Food": return Color.blue
+        case "Shopping": return Color.green
+        case "Transport": return Color.orange
+        default: return Color.purple
+        }
+    }
 }
 
 #Preview {

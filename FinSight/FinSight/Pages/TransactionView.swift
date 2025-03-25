@@ -14,12 +14,17 @@ struct TransactionPage: View {
                     EditExpenseView(expenseData: expenseData)
                 } label: {
                     VStack(alignment: .leading) {
-                        Text(expenseData.category)
-                            .font(.headline)
-                        Text("\(expenseData.amount, format: .currency(code: "IDR"))")
-                            .font(.headline)
+                        HStack{
+                            Text(expenseData.category)
+                                .font(.footnote)
+                            Spacer()
+                            Text("\(expenseData.amount, format: .currency(code: "IDR"))")
+                                .font(.caption2)
+                        }
                         Text(expenseData.note)
-                            .font(.subheadline)
+                            .font(.caption2)
+                        Text(expenseData.date, format: .dateTime.day().month().year())
+                            .font(.caption)
                     }
                 }
             }

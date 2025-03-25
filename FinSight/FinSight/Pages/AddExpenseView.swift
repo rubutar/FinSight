@@ -9,7 +9,8 @@ struct AddExpenseView: View {
         Form {
             TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR"))
             TextField("Note", text: $expenseData.note)
-            DatePicker("Date", selection: $expenseData.date)
+            DatePicker("Date", selection: $expenseData.date, displayedComponents: .date)
+                .datePickerStyle(.compact)
             Picker("Category", selection: $expenseData.category) {
                 Text("Food").tag("Food")
                 Text("Transport").tag("Transport")
@@ -25,7 +26,6 @@ struct AddExpenseView: View {
                 Button("Save") {
                     saveExpense()
                 }
-                .buttonStyle(.borderedProminent)
             }
         }
     }

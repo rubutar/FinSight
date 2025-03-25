@@ -40,7 +40,7 @@ struct SplashScreen: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
-                .font(.body)
+                .font(.subheadline)
                 .foregroundColor(.bgThemeGreen)
                 .multilineTextAlignment(.center)
                 .padding(.bottom,100)
@@ -51,6 +51,7 @@ struct SplashScreen: View {
         //.background(Color)
         .background(Color.white)
         .foregroundColor(.bgThemeGreen)
+        .padding()
     }
 }
 

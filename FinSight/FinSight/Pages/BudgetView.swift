@@ -57,11 +57,6 @@ struct BudgetView: View {
     @State var rentInput : String = ""
     @State var savingInput : String = ""
     
-    @State var foodSuggested : Int = 0
-    @State var transportSuggested : Int = 0
-    @State var utilitiesSuggested : Int = 0
-    @State var entertaimentSuggested : Int = 0
-    @State var savingSuggested : Int = 0
     @State var isCalculated : Bool = false
         
     let columns: [GridItem] = [
@@ -69,7 +64,27 @@ struct BudgetView: View {
         GridItem(.flexible())
     ]
     
+    @State var isShowInfoBudget: Bool = false
 
+    var stipendValue: Int {
+        let cleanedInput = stipenInput.filter { $0.isNumber }
+        return Int(cleanedInput) ?? 0
+    }
+    var incomeValue: Int {
+        let cleanedInput = incomeInput.filter { $0.isNumber }
+        return Int(cleanedInput) ?? 0
+    }
+    var rentValue: Int {
+        let cleanedInput = rentInput.filter { $0.isNumber }
+        return Int(cleanedInput) ?? 0
+    }
+    var savingValue: Int {
+        let cleanedInput = savingInput.filter { $0.isNumber }
+        return Int(cleanedInput) ?? 0
+    }
+    var budgetBulanan: Int {
+        return stipendValue + incomeValue - rentValue
+    }
     
     var body: some View {
         NavigationStack(){
@@ -231,6 +246,7 @@ struct BudgetView: View {
                 
                 Spacer()
                 Spacer()
+
                 var stipenAmount: Double {
                     let cleanedInput = stipenInput.filter { $0.isNumber }
                     return Double(cleanedInput) ?? 0
@@ -263,11 +279,19 @@ struct BudgetView: View {
                             .foregroundColor(Color(.bgThemeGreen))
                         Spacer()
                         Spacer()
-                        Text("Suggested budget :")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
+                        HStack{
+                            Text("Suggested budget :")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            Button(action: {
+                                isShowInfoBudget.toggle()
+                            }) {
+                                Image(systemName: "info.circle")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                            }
+                        }.frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack {
                             HStack(alignment: .center) {
@@ -292,7 +316,7 @@ struct BudgetView: View {
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
-                                Image(systemName: "fork.knife.circle")
+                                Image(systemName: "car.circle")
                                     .font(.system(size: 40))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
@@ -313,7 +337,7 @@ struct BudgetView: View {
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
-                                Image(systemName: "fork.knife.circle")
+                                Image(systemName: "bolt.circle")
                                     .font(.system(size: 40))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
@@ -334,7 +358,7 @@ struct BudgetView: View {
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
-                                Image(systemName: "fork.knife.circle")
+                                Image(systemName: "theatermasks.circle")
                                     .font(.system(size: 40))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
@@ -355,7 +379,7 @@ struct BudgetView: View {
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
-                                Image(systemName: "fork.knife.circle")
+                                Image(systemName: "creditcard.circle")
                                     .font(.system(size: 40))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
@@ -398,22 +422,25 @@ struct BudgetView: View {
                 }
             }
             .onAppear {
-                //                printBudgetData()
+                // printBudgetData()
                 // Check if there's data in the database when the view appears
                 if let firstItem = budgetData.first {
                     // If data exists, set stipenAmount from the database
                     print("tanggal di buat : \(firstItem.created_at)")
-                    stipenAmount = firstItem.stipen
+    
+                    
+                    stipenInput = String(firstItem.stipen)
                     otherIncomeAmount = firstItem.income
                     rentAmount = firstItem.rent
-                    waterAmount = firstItem.water
-                    electricityAmount = firstItem.electricity
-                    otherExpensesAmount = firstItem.others
+//                    waterAmount = firstItem.water
+//                    electricityAmount = firstItem.electricity
+//                    otherExpensesAmount = firstItem.others
                     savingAmount = firstItem.savings
                     monthlyBudget = firstItem.monthly_budget
+                    print("all : \(stipenInput) - \(otherIncomeAmount) - \(rentAmount) - \(savingAmount) - \(monthlyBudget)")
                 } else {
                     // add initial data
-                    addBudget()
+//                    addBudget()
                 }
             }
             .toolbar {
@@ -451,14 +478,20 @@ struct BudgetView: View {
             Text("Please fill out all the fields in the form to receive the calculated budget.")
         })
         
+        .sheet(isPresented: $isShowInfoBudget) {
+            print("Sheet dismissed!")
+        } content: {
+            ContentBudgetView()
+        }
     }
     
     
     func validate(){
-        if Int(monthlyBudget) < 0 {
+        if Int(budgetBulanan) < 0 {
             isBudgetNegative = true
         } else {
             print("data positif")
+            addBudget()
             showInsightView = true
             isBudgetNegative = false
             
@@ -476,26 +509,7 @@ struct BudgetView: View {
     
     func updateBudget(){
         if !stipenInput.isEmpty && !incomeInput.isEmpty && !rentInput.isEmpty && !savingInput.isEmpty {
-            if let firstItem = budgetData.first{
-                monthlyBudget = CalculateBudget(stipenAmount: Double(stipenInput) ?? 0.0, otherIncomeAmount: Double(incomeInput) ?? 0.0, rentAmount: Double(incomeInput) ?? 0.0,savingAmount: Double(savingInput) ?? 0.0)
-                print("monthlyBudget \(monthlyBudget)")
-                firstItem.stipen = Double(stipenInput) ?? 0.0
-                firstItem.income = Double(incomeInput) ?? 0.0
-                firstItem.rent = Double(incomeInput) ?? 0.0
-                firstItem.water = waterAmount
-                firstItem.electricity = electricityAmount
-                firstItem.others = otherExpensesAmount
-                firstItem.savings = Double(savingInput) ?? 0.0
-                firstItem.monthly_budget = monthlyBudget
-                
-                foodSuggested = Int(monthlyBudget * 0.2)
-                transportSuggested = Int(monthlyBudget * 0.1)
-                utilitiesSuggested = Int(monthlyBudget * 0.2)
-                entertaimentSuggested = Int(monthlyBudget * 0.3)
-                savingSuggested = Int(monthlyBudget * 0.2)
-            } else {
-                addBudget()
-            }
+            addBudget()
             isCalculated = true
         } else {
             isCalculated = false
@@ -504,10 +518,8 @@ struct BudgetView: View {
     }
     
     func addBudget(){
-        monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount,savingAmount: savingAmount)
-        
         let tambahData = BudgetData(
-            stipen:stipenAmount,income:otherIncomeAmount, rent:rentAmount, water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:savingAmount, monthly_budget:monthlyBudget
+            stipen:Double(stipendValue),income:Double(incomeValue), rent:Double(rentValue), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingValue), monthly_budget:Double(budgetBulanan)
         )
         modelContext.insert(tambahData)
     }

@@ -24,8 +24,23 @@ struct OneDimensionalBar: View {
     @State private var showLegend = true
     
     
+    // Variables for each category (defaulting to 0 if no data)
+    var totalFood: Double { totalByCategory["Food"] ?? 0 }
+    var totalShopping: Double { totalByCategory["Shopping"] ?? 0 }
+    var totalTransport: Double { totalByCategory["Transport"] ?? 0 }
+    var totalOthers: Double { totalByCategory["Others"] ?? 0 }
+    
+    private var categoryTotals: [(category: String, amount: Double)] {
+        [
+            ("Food", totalFood),
+            ("Shopping", totalShopping),
+            ("Transport", totalTransport),
+            ("Others", totalOthers)
+        ]
+    }
+        
+    
     var body: some View {
-        //        if isOverview {
         VStack {
             HStack {
                 Text(currentMonth)
@@ -36,29 +51,10 @@ struct OneDimensionalBar: View {
             }
             chart
         }
-        //        } else {
-        //            List {
-        //                Section {
-        //                    VStack {
-        //                        HStack {
-        //                            Text("Maret")
-        //                            Spacer()
-        //                            Text("Rp. \(totalExpenses, specifier: "%.0f") of Rp. \(monthlyBudget, specifier: "%.0f") used")
-        //                                .foregroundColor(.secondary)
-        //                                .font(.caption)
-        //                        }
-        //                        chart
-        //                    }
-        //                }
-        //                customisation
-        //            }
-        //            .navigationBarTitle(ChartType.oneDimensionalBar.title, displayMode: .inline)
-        //        }
-        
     }
     
     private var chart: some View {
-        Chart(expensesData, id: \.category) { element in
+        Chart(categoryTotals, id: \.category) { element in
             Plot {
                 BarMark(
                     x: .value("Data Size", element.amount)
@@ -67,7 +63,6 @@ struct OneDimensionalBar: View {
             }
             .accessibilityLabel(element.category)
             .accessibilityValue("Rp. \(element.amount, specifier: "%.1f")")
-//            .accessibilityHidden(isOverview)
         }
         .chartPlotStyle { plotArea in
             plotArea

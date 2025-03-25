@@ -81,7 +81,7 @@ func categoryColor(_ category: String) -> Color {
     case "Food": return Color.blue
     case "Shopping": return Color.green
     case "Transport": return Color.orange
-    default: return Color.gray
+    default: return Color.purple
     }
 }
 

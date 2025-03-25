@@ -17,7 +17,7 @@ struct MainView: View {
             .onAppear {
                 validateMenu()
             }
-        }
+        }.accentColor(.bgThemeGreen)
     }
     
     func validateMenu() {

@@ -229,13 +229,14 @@ struct BudgetView: View {
                 Spacer()
                 Button(action: validate) {
                     Text("Get the Insights")
+                        .font(.title2 .bold())
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color("bgThemeGreen"))
+                        .cornerRadius(10)
+                        .padding(.horizontal)
                 }.foregroundStyle(Color(.white))
-                    .font(.title2 .bold())
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color("bgThemeGreen"))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+                    
                 
             }
             .onAppear {

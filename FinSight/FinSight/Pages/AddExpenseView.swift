@@ -25,7 +25,7 @@ struct AddExpenseView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     saveExpense()
-                }
+                }.foregroundStyle(Color("bgThemeGreen"))
             }
         }
     }

@@ -94,7 +94,11 @@ struct InsightPage: View {
             Spacer()
             NavigationLink(destination: TransactionPage()) {
                 Text("View Transaction")
-            }.buttonStyle(.bordered)
+            }.font(.subheadline .bold())
+                .padding()
+                .foregroundStyle(Color("bgThemeGreen"))
+                .background(Color("bgColor5"))
+                .cornerRadius(10)
             Spacer()
             //                NavigationLink(destination: BudgetPage()) {
             //                    Text("Budget")
@@ -109,7 +113,7 @@ struct InsightPage: View {
                         HStack {
                             Image(systemName: "chevron.backward")
                             Text("Back")
-                        }
+                        }.foregroundStyle(Color("bgThemeGreen"))
                     }
                 }
             }.onAppear(){

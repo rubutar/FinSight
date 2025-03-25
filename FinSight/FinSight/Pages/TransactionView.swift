@@ -32,7 +32,7 @@ struct TransactionPage: View {
                     AddExpenseView(expenseData: ExpenseData(amount: 0, note: "", date: Date(), category: "Food"))
                 } label: {
                     Image(systemName: "plus")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.bgThemeGreen)
                 }
             }
         }

@@ -41,10 +41,11 @@ struct BudgetView: View {
         NavigationStack(){
             Spacer()
             VStack{
-                HStack{
+                HStack(alignment: .bottom){
                     Image("Image")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .frame(width: 40, height: 40)
+                        .padding(.top)
                     Text("FinSight")
                         .foregroundStyle(Color(.white))
                         .font(.title)
@@ -197,6 +198,19 @@ struct BudgetView: View {
                 Spacer()
                 Spacer()
                 
+                Button(action: updateBudget) {
+                    Text("Calculate")
+                }.foregroundStyle(Color("bgThemeGreen"))
+                    .font(.subheadline .bold())
+                    .padding()
+                    .background(Color("bgColor5"))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                
+                Spacer()
+                Spacer()
+                
                 VStack{
                     Text("Based on calculation, your monthly budget for the other expense will be:")
                     Spacer()
@@ -209,15 +223,7 @@ struct BudgetView: View {
                 .cornerRadius(10)
                 .padding(.horizontal)
                 
-                Button(action: updateBudget) {
-                    Text("Calculate")
-                }.foregroundStyle(Color(.white))
-                    .font(.title2 .bold())
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color("bgThemeGreen"))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+                
                 
                 Spacer()
                 Spacer()

@@ -2,11 +2,11 @@ func CalculateBudget(
     stipenAmount: Double,
     otherIncomeAmount: Double,
     rentAmount: Double,
-    waterAmount: Double,
-    electricityAmount: Double,
-    otherExpensesAmount: Double,
     savingAmount: Double
 ) -> Double {
-    return( (stipenAmount + otherIncomeAmount) - (rentAmount+waterAmount+electricityAmount+otherExpensesAmount+otherExpensesAmount+savingAmount)
+    return( (stipenAmount + otherIncomeAmount) - (rentAmount+savingAmount)
 )}
 
+func CalculateDetail(for percentage: Double, budget: Double) -> Double {
+    return budget * percentage
+}

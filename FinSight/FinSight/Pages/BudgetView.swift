@@ -26,6 +26,7 @@ struct BudgetView: View {
     @State private var greeting: String = "Hello world!"
     @State private var showInsightView = false
     @State private var isBudgetNegative: Bool = false
+    @State private var isAlertBudget : Bool = false
     
     // Placeholder
     var stipenPlaceholder: String = "Input Stipen"
@@ -36,33 +37,41 @@ struct BudgetView: View {
     var otherExpensesPlaceholder: String = "Input Other Expenses Budget"
     var savingPlaceholder: String = "Input Saving Budget"
     
+    @State var test: Int = 0
+    @State private var input: String = ""
+    
+    private var currencyFormatter: NumberFormatter {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.currencyCode = "IDR" // Kode mata uang IDR
+            formatter.currencySymbol = "Rp" // Mengatur simbol rupiah
+            formatter.groupingSeparator = "."
+            formatter.groupingSize = 3
+            formatter.minimumFractionDigits = 0 // Menentukan jumlah angka desimal (opsional)
+            formatter.maximumFractionDigits = 0
+            return formatter
+        }
+    
+    @State var stipenInput : String = ""
+    @State var incomeInput : String = ""
+    @State var rentInput : String = ""
+    @State var savingInput : String = ""
+    
+    @State var foodSuggested : Int = 0
+    @State var transportSuggested : Int = 0
+    @State var utilitiesSuggested : Int = 0
+    @State var entertaimentSuggested : Int = 0
+    @State var savingSuggested : Int = 0
+    @State var isCalculated : Bool = false
+    
+    let columns: [GridItem] = [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
     
     var body: some View {
         NavigationStack(){
-            Spacer()
-            VStack{
-                HStack(alignment: .bottom){
-                    Image("Image")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .padding(.top)
-                    Text("FinSight")
-                        .foregroundStyle(Color("bgThemeGreen"))
-                        .font(.title)
-                        .fontWeight(.semibold)
-                }
-//                Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
-//                    .font(.footnote)
-//                    .foregroundColor(.white)
-//                    .multilineTextAlignment(.center)
-//                    .padding(.horizontal)
-//                    .padding([.bottom])
-            }
-//            .background(Color("bgThemeGreen"))
-            .cornerRadius(10)
-            .padding(.horizontal)
             ScrollView{
-                Spacer()
                 //------------- check stored data
                 //                ForEach(budgetData) { storedBudgetData in
                 //                    Text("monthly_budget at \(storedBudgetData.monthly_budget)")
@@ -70,20 +79,29 @@ struct BudgetView: View {
                 //                Text("Incomes \(budgetData.count) ")
                 //-------------
                 Text("Incomes")
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 
                 VStack{
                     HStack {
+                        
                         Text("Stipend")
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField(stipenPlaceholder, value: $stipenAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
+                        TextField("Rp 5.700.000", text: $stipenInput)
+                            .keyboardType(.numberPad)
+                            .onChange(of: stipenInput) { newValue in
+                                // Hapus karakter selain angka
+                                let cleanedInput = newValue.filter { $0.isNumber }
+                                if let number = Int(cleanedInput) {
+                                    // Format angka dengan menggunakan formatter mata uang
+                                    stipenInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+                                } else {
+                                    stipenInput = ""
+                                }
                             }
                             .multilineTextAlignment(.trailing)
                     }
@@ -93,10 +111,17 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField(otherIncomePlaceholder, value: $otherIncomeAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
+                        TextField("Rp 0", text: $incomeInput)
+                            .keyboardType(.numberPad)
+                            .onChange(of: incomeInput) { newValue in
+                                // Hapus karakter selain angka
+                                let cleanedInput = newValue.filter { $0.isNumber }
+                                if let number = Int(cleanedInput) {
+                                    // Format angka dengan menggunakan formatter mata uang
+                                    incomeInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+                                } else {
+                                    incomeInput = ""
+                                }
                             }
                             .multilineTextAlignment(.trailing)
                     }
@@ -111,7 +136,8 @@ struct BudgetView: View {
                 Spacer()
                 
                 Text("Fixed Expenses")
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
@@ -120,46 +146,17 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField(rentPlaceholder, value: $rentAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
-                            }
-                            .multilineTextAlignment(.trailing)
-                    }
-                    HStack {
-                        Text("Water")
-                            .frame(width: 70, alignment: .leading)
-                            .font(.body)
-                        Spacer()
-                        TextField(waterPlaceholder, value: $waterAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
-                            }
-                            .multilineTextAlignment(.trailing)
-                    }
-                    HStack {
-                        Text("Electric")
-                            .frame(width: 70, alignment: .leading)
-                            .font(.body)
-                        Spacer()
-                        TextField(electricityPlaceholder, value: $electricityAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
-                            }
-                            .multilineTextAlignment(.trailing)
-                    }
-                    HStack {
-                        Text("Others")
-                            .frame(width: 70, alignment: .leading)
-                            .font(.body)
-                        Spacer()
-                        TextField(otherExpensesPlaceholder, value: $otherExpensesAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
+                        TextField("Rp 700.000", text: $rentInput)
+                            .keyboardType(.numberPad)
+                            .onChange(of: rentInput) { newValue in
+                                // Hapus karakter selain angka
+                                let cleanedInput = newValue.filter { $0.isNumber }
+                                if let number = Int(cleanedInput) {
+                                    // Format angka dengan menggunakan formatter mata uang
+                                    rentInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+                                } else {
+                                    rentInput = ""
+                                }
                             }
                             .multilineTextAlignment(.trailing)
                     }
@@ -173,7 +170,8 @@ struct BudgetView: View {
                 Spacer()
                 
                 Text("Savings")
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                 VStack{
@@ -182,10 +180,18 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField(savingPlaceholder, value: $savingAmount, format: .currency(code: "IDR"))
-                            .keyboardType(.decimalPad)
-                            .onSubmit {
-                                updateBudget()
+                        
+                        TextField("Rp 500.000", text: $savingInput)
+                            .keyboardType(.numberPad)
+                            .onChange(of: savingInput) { newValue in
+                                // Hapus karakter selain angka
+                                let cleanedInput = newValue.filter { $0.isNumber }
+                                if let number = Int(cleanedInput) {
+                                    // Format angka dengan menggunakan formatter mata uang
+                                    savingInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+                                } else {
+                                    savingInput = ""
+                                }
                             }
                             .multilineTextAlignment(.trailing)
                     }
@@ -211,33 +217,154 @@ struct BudgetView: View {
                 Spacer()
                 Spacer()
                 
-                VStack{
-                    Text("Based on calculation, your monthly budget for the other expense will be:")
-                    Spacer()
-                    Text(monthlyBudget, format: .currency(code: "IDR"))
-                        .bold()
-                        .font(.title)
-                }
-                .padding()
-                .background(Color("bgColor5"))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                
-                
-                
-                Spacer()
-                Spacer()
-                Button(action: validate) {
-                    Text("Get the Insights")
-                        .font(.title2 .bold())
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color("bgThemeGreen"))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                }.foregroundStyle(Color(.white))
+                if isCalculated {
+                    VStack{
+                        Text("Based on calculation, your monthly budget for the other expense will be:")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                        Text(monthlyBudget, format: .currency(code: "IDR"))
+                            .bold()
+                            .font(.largeTitle)
+                            .foregroundColor(Color(.bgThemeGreen))
+                        Spacer()
+                        Spacer()
+                        Text("Suggested budget :")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        
+                        VStack {
+                            HStack(alignment: .center) {
+                                Image(systemName: "fork.knife.circle")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(Color(.bgThemeGreen))
+                                    .padding(.trailing, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Food")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Rp \(foodSuggested)")
+                                        .font(.title3)
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("20%")
+                                        .font(.headline)
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            Spacer()
+                            Spacer()
+                            HStack(alignment: .top) {
+                                Image(systemName: "fork.knife.circle")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(Color(.bgThemeGreen))
+                                    .padding(.trailing, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Transport")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Rp \(transportSuggested)")
+                                        .font(.title3)
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("10%")
+                                        .font(.headline)
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            Spacer()
+                            Spacer()
+                            HStack(alignment: .top) {
+                                Image(systemName: "fork.knife.circle")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(Color(.bgThemeGreen))
+                                    .padding(.trailing, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Utilities")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Rp \(utilitiesSuggested)")
+                                        .font(.title3)
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("20%")
+                                        .font(.headline)
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            Spacer()
+                            Spacer()
+                            HStack(alignment: .top) {
+                                Image(systemName: "fork.knife.circle")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(Color(.bgThemeGreen))
+                                    .padding(.trailing, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Entertaiment")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Rp \(entertaimentSuggested)")
+                                        .font(.title3)
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("30%")
+                                        .font(.headline)
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            Spacer()
+                            Spacer()
+                            HStack(alignment: .top) {
+                                Image(systemName: "fork.knife.circle")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(Color(.bgThemeGreen))
+                                    .padding(.trailing, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Saving")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Rp \(savingSuggested)")
+                                        .font(.title3)
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("20%")
+                                        .font(.headline)
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            
+                            
+                            
+                        }
+                        .padding(.vertical)
+                    }
+                    .padding()
+                    .background(Color("bgColor5"))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
                     
-                
+                    
+                    
+                    Spacer()
+                    Spacer()
+                    Button(action: validate) {
+                        Text("Get the Insights")
+                            .font(.title2 .bold())
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color("bgThemeGreen"))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                    }.foregroundStyle(Color(.white))
+                    
+                }
             }
             .onAppear {
                 //                printBudgetData()
@@ -280,13 +407,22 @@ struct BudgetView: View {
                 InsightPage()
             }
             .navigationBarBackButtonHidden(true)
+            .navigationTitle("Budget")
         }.alert("Budget Cannot Be Negative",isPresented: $isBudgetNegative, actions:{
             Button("OK") {}
         },message: {
             Text("To ensure accurate financial tracking, please set your budget to a positive value. Negative budgets can lead to incorrect calculations.")
         })
         
+        .alert("Budget Cannot Be Empty",isPresented: $isAlertBudget, actions:{
+            Button("OK") {}
+        },message: {
+            Text("Please fill out all the fields in the form to receive the calculated budget.")
+        })
+        
     }
+    
+    
     func validate(){
         if Int(monthlyBudget) < 0 {
             isBudgetNegative = true
@@ -308,24 +444,36 @@ struct BudgetView: View {
     }
     
     func updateBudget(){
-        if let firstItem = budgetData.first{
-            monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount, waterAmount: waterAmount, electricityAmount: electricityAmount, otherExpensesAmount: otherExpensesAmount, savingAmount: savingAmount)
-            
-            firstItem.stipen = stipenAmount
-            firstItem.income = otherIncomeAmount
-            firstItem.rent = rentAmount
-            firstItem.water = waterAmount
-            firstItem.electricity = electricityAmount
-            firstItem.others = otherExpensesAmount
-            firstItem.savings = savingAmount
-            firstItem.monthly_budget = monthlyBudget
+        if !stipenInput.isEmpty && !incomeInput.isEmpty && !rentInput.isEmpty && !savingInput.isEmpty {
+            if let firstItem = budgetData.first{
+                monthlyBudget = CalculateBudget(stipenAmount: Double(stipenInput) ?? 0.0, otherIncomeAmount: Double(incomeInput) ?? 0.0, rentAmount: Double(incomeInput) ?? 0.0,savingAmount: Double(savingInput) ?? 0.0)
+                print("monthlyBudget \(monthlyBudget)")
+                firstItem.stipen = Double(stipenInput) ?? 0.0
+                firstItem.income = Double(incomeInput) ?? 0.0
+                firstItem.rent = Double(incomeInput) ?? 0.0
+                firstItem.water = waterAmount
+                firstItem.electricity = electricityAmount
+                firstItem.others = otherExpensesAmount
+                firstItem.savings = Double(savingInput) ?? 0.0
+                firstItem.monthly_budget = monthlyBudget
+                
+                foodSuggested = Int(monthlyBudget * 0.2)
+                transportSuggested = Int(monthlyBudget * 0.1)
+                utilitiesSuggested = Int(monthlyBudget * 0.2)
+                entertaimentSuggested = Int(monthlyBudget * 0.3)
+                savingSuggested = Int(monthlyBudget * 0.2)
+            } else {
+                addBudget()
+            }
+            isCalculated = true
         } else {
-            addBudget()
+            isCalculated = false
+            isAlertBudget = true
         }
     }
     
     func addBudget(){
-        monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount, waterAmount: waterAmount, electricityAmount: electricityAmount, otherExpensesAmount: otherExpensesAmount, savingAmount: savingAmount)
+        monthlyBudget = CalculateBudget(stipenAmount: stipenAmount, otherIncomeAmount: otherIncomeAmount, rentAmount: rentAmount,savingAmount: savingAmount)
         
         let tambahData = BudgetData(
             stipen:stipenAmount,income:otherIncomeAmount, rent:rentAmount, water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:savingAmount, monthly_budget:monthlyBudget

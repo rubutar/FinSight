@@ -2,9 +2,12 @@ import SwiftUI
 import SwiftData
 
 struct InsightPage: View {
+    @Environment(\.modelContext) var modelContext
     @Query private var budgetData: [BudgetData]
     @Query var expensesData: [ExpenseData]
     @State var messageInsight : String = ""
+    @State private var showAddExpenseView = false  // State to control AddExpenseView presentation
+
     
     var savingBudget: Double {
         budgetData.first?.savings ?? 0
@@ -24,8 +27,8 @@ struct InsightPage: View {
     private let categories = ["Food", "Shopping", "Transport", "Others"]
     
     private let columns = [
-        GridItem(.flexible(), spacing: 4),
-        GridItem(.flexible(), spacing: 4)
+        GridItem(.flexible(), spacing: 1),
+        GridItem(.flexible(), spacing: 1)
         ]
     
     var dateFormatter: DateFormatter {
@@ -58,52 +61,17 @@ struct InsightPage: View {
     
     var body: some View {
         // Version 1 - white bacground
-        ScrollView{
+//        ScrollView{
+        VStack(alignment: .leading) {
             OneDimensionalBar()
                 .padding()
-            LazyVGrid(columns: columns, spacing: 4) {
+            LazyVGrid(columns: columns, spacing: 2) {
                 ForEach(categories, id: \.self) { category in
                     let total = totalByCategory[category] ?? 0
                     let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
-
-                    VStack(alignment: .leading, spacing: 2) { // Small spacing inside
-                        Text("\(category) \(percentage, specifier: "%.0f")%")
-                            .font(.footnote)
-                        
-                        Text("\(total, format: .currency(code: "IDR"))")
-                            .font(.caption2)
-                            .bold()
-                            .foregroundColor(categoryColor(category))
-                    }
-                    .padding(6)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .background(categoryColor(category))
-                    .cornerRadius(6)
+                    SmallOneDimensionalBar(spentAmount: 900_000, totalBudget: 1_000_000)
                 }
             }
-            .padding(.horizontal, 8)
-            
-            ForEach(0..<1) { number in
-                GroupBox(label: Text("Motivation")) {
-                    Text("\(messageInsight)")
-                }.padding()
-                GroupBox(label: Text("Summary")) {
-                    Text("Based on calculation, your other expense budget is Rp 3.500.000/month")
-                }.padding()
-            }
-            Spacer()
-            NavigationLink(destination: TransactionPage()) {
-                Text("View Transaction")
-            }.font(.subheadline .bold())
-                .padding()
-                .foregroundStyle(Color("bgThemeGreen"))
-                .background(Color("bgColor5"))
-                .cornerRadius(10)
-            Spacer()
-            //                NavigationLink(destination: BudgetPage()) {
-            //                    Text("Budget")
-            //                }.buttonStyle(.bordered)
-            
             
         }.navigationTitle("Insights")
             .navigationBarBackButtonHidden(true)
@@ -116,60 +84,51 @@ struct InsightPage: View {
                         }.foregroundStyle(Color("bgThemeGreen"))
                     }
                 }
-            }.onAppear(){
-                MotivationInsight()
+//            }.onAppear(){
+//                MotivationInsight()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        AddExpenseView(expenseData: ExpenseData(amount: 0, note: "", date: Date(), category: "Food"))
+                    } label: {
+                        Text("Add Expense")
+                            .foregroundColor(.bgThemeGreen)
+                    }
+                }
             }
-        
-    }
-    
-    func MotivationInsight() -> String{
-        let weeklyBudget = monthlyBudget/4
-        var totalExpenseWeek1 = 0.0
-        var totalExpenseWeek2 = 0.0
-        var totalExpenseWeek3 = 0.0
-        var totalExpenseWeek4 = 0.0
-        let monthlyBudgetandsaving = monthlyBudget - savingBudget
-        let totalUntilWeek3 = totalExpenseWeek1 + totalExpenseWeek2 + totalExpenseWeek3
-        let totalUntilWeek4 = totalExpenseWeek1 + totalExpenseWeek2 + totalExpenseWeek3 + totalExpenseWeek4
-        
-        if !totalByWeekOfMonth.isEmpty {
-             totalExpenseWeek1 = Array(totalByWeekOfMonth)[0].value
-//             totalExpenseWeek2 = Array(totalByWeekOfMonth)[1].value
-//             totalExpenseWeek3 = Array(totalByWeekOfMonth)[1].value
-//             totalExpenseWeek4 = Array(totalByWeekOfMonth)[1].value
+        VStack(alignment: .leading) {
+            Text("Expenses History")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .padding(.top, 8)
+            List {
+                ForEach(expensesData) { expenseData in
+                    NavigationLink(destination: EditExpenseView(expenseData: expenseData)) {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(expenseData.category)
+                                    .font(.footnote)
+                                    .foregroundStyle(Color("bgThemeGreen"))
+                                Spacer()
+                                Text("\(expenseData.amount, format: .currency(code: "IDR"))")
+                                    .font(.caption2)
+                            }
+                            Text(expenseData.note)
+                                .font(.caption2)
+                            Text(expenseData.date, format: .dateTime.day().month().year())
+                                .font(.caption)
+                        }
+                        .padding(8)
+                        .background(Color("bgColor5"))
+                        .cornerRadius(10)
+                    }
+                }
+            }
+            .listStyle(.plain)
+            
+            Spacer()
         }
-        
-        if totalExpenses.isZero {
-            // belum ada expense
-            messageInsight = "Let's start recording your expenses. Keep up the good habit!"
-        } else if totalExpenseWeek1 > weeklyBudget {
-            // week 1
-            messageInsight = "Wow, in Week 1 you are overspending! Try adjusting your spending habits so you don't run out of budget too soon."
-        } else if (totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) {
-            // week 2
-            messageInsight = "You’ve overspent for two weeks in a row! If this continues, you may run out of money before the month ends. Try cutting down on non-essential expenses."
-        } else if ((totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) && (totalExpenseWeek3 > weeklyBudget)){
-            // week 3
-            if totalUntilWeek3 > monthlyBudget {
-                messageInsight = "You’ve overspent for three weeks! Be extra careful in the last week to stay within your budget."
-            }
-        } else if ((totalExpenseWeek1 > weeklyBudget) && (totalExpenseWeek2 > weeklyBudget) && (totalExpenseWeek3 > weeklyBudget)) {
-            // week 4
-            if totalUntilWeek4 > monthlyBudget {
-                messageInsight = "You’ve exceeded your monthly budget, and there's still one more week before your stipend arrives. Time to be extra frugal!"
-            }
-        } else if totalExpenses < monthlyBudgetandsaving {
-            // surplus
-            messageInsight = "Great job! You have leftover budget this month. Consider adding it to your savings or investing for future financial goals."
-        } else if totalExpenses == monthlyBudget {
-            messageInsight = "Congratulations! You managed to balance your spending perfectly this month. Keep up the great budgeting habits!"
-        } else {
-            messageInsight = ""
-        }
-        print("messageInsight \(messageInsight)")
-        return messageInsight
     }
-    
     // Function to give each category a fixed color
     func categoryColor(_ category: String) -> Color {
         switch category {

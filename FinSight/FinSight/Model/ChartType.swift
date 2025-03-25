@@ -46,7 +46,7 @@ enum ChartType: String, Identifiable, CaseIterable {
         // Return the chart descriptor based on the current view type.
             // TODO: Use protocol conformance for chart generation to eliminate the need for manual switch cases.
             if case .oneDimensionalBar = self {
-                return OneDimensionalBar(isOverview: true).makeChartDescriptor()
+                return OneDimensionalBar().makeChartDescriptor()
             }
             return nil
     }
@@ -62,7 +62,7 @@ enum ChartType: String, Identifiable, CaseIterable {
             Text("Overview View")
         } else {
             if case .oneDimensionalBar = self {
-                OneDimensionalBar(isOverview: isOverview)
+                OneDimensionalBar()
             } else {
                 Text("Default Case")
             }

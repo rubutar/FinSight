@@ -32,7 +32,7 @@ struct SplashScreenView: View {
 struct SplashScreen: View {
     var body: some View {
         VStack {
-            Image(.LOGO)
+            Image(.image)
                 .resizable()
                 .frame(width: 300, height: 300)
             

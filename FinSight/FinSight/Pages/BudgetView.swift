@@ -38,24 +38,28 @@ struct BudgetView: View {
     
     var body: some View {
         NavigationStack(){
-            ScrollView{
-                VStack{
+            Spacer()
+            VStack{
+                HStack{
+                    Image("Image")
+                        .resizable()
+                        .frame(width: 50, height: 50)
                     Text("FinSight")
                         .foregroundStyle(Color(.white))
                         .font(.title)
                         .fontWeight(.semibold)
-                    Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .padding([.bottom])
                 }
-                .background(Color("bgThemeGreen"))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                
-                Spacer()
+                Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
+                    .font(.footnote)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    .padding([.bottom])
+            }
+            .background(Color("bgThemeGreen"))
+            .cornerRadius(10)
+            .padding(.horizontal)
+            ScrollView{
                 Spacer()
         //------------- check stored data
 //                ForEach(budgetData) { storedBudgetData in

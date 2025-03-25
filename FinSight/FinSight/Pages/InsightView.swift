@@ -11,22 +11,39 @@ struct InsightPage: View {
         Dictionary(grouping: expensesData, by: { $0.category })
             .mapValues { $0.reduce(0) { $0 + $1.amount } }
     }
+    private let categories = ["Food", "Shopping", "Transport", "Others"]
+    
+    private let columns = [
+        GridItem(.flexible(), spacing: 4),
+        GridItem(.flexible(), spacing: 4)
+        ]
     
     var body: some View {
         // Version 1 - white bacground
         ScrollView{
-            OneDimensionalBar(isOverview: true).padding()
-            Text("Total Expenses: \(totalExpenses, format: .currency(code: "IDR"))")
-                .bold()
-            ForEach(totalByCategory.sorted(by: { $0.key < $1.key }), id: \.key) { category, total in
-                var percentage: Double { total / totalExpenses * 100 }
-                HStack {
-                    Text("\(category) \(percentage.rounded(.down), specifier: "%.0f")%")
-                    Spacer()
-                    Text("\(total, format: .currency(code: "IDR"))")
+            OneDimensionalBar()
+                .padding()
+            LazyVGrid(columns: columns, spacing: 4) {
+                ForEach(categories, id: \.self) { category in
+                    let total = totalByCategory[category] ?? 0
+                    let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
+
+                    VStack(alignment: .leading, spacing: 2) { // Small spacing inside
+                        Text("\(category) \(percentage, specifier: "%.0f")%")
+                            .font(.footnote)
+                        
+                        Text("\(total, format: .currency(code: "IDR"))")
+                            .font(.caption2)
+                            .bold()
+                            .foregroundColor(categoryColor(category))
+                    }
+                    .padding(6)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+//                    .background(categoryColor(category))
+                    .cornerRadius(6)
                 }
             }
-            
+            .padding(.horizontal, 8)
             
             ForEach(0..<1) { number in
                 GroupBox(label: Text("Motivation")) {
@@ -59,6 +76,15 @@ struct InsightPage: View {
                 }
             }
     }
+func categoryColor(_ category: String) -> Color {
+    switch category {
+    case "Food": return Color.blue
+    case "Shopping": return Color.green
+    case "Transport": return Color.orange
+    default: return Color.gray
+    }
+}
+
 }
 
 #Preview {

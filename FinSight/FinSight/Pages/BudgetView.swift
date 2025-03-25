@@ -63,7 +63,7 @@ struct BudgetView: View {
     @State var entertaimentSuggested : Int = 0
     @State var savingSuggested : Int = 0
     @State var isCalculated : Bool = false
-    
+        
     let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -231,24 +231,24 @@ struct BudgetView: View {
                 
                 Spacer()
                 Spacer()
-                var stipendValue: Int {
+                var stipenAmount: Double {
                     let cleanedInput = stipenInput.filter { $0.isNumber }
-                    return Int(cleanedInput) ?? 0
+                    return Double(cleanedInput) ?? 0
                 }
-                var incomeValue: Int {
+                var otherIncomeAmount: Double {
                     let cleanedInput = incomeInput.filter { $0.isNumber }
-                    return Int(cleanedInput) ?? 0
+                    return Double(cleanedInput) ?? 0
                 }
-                var rentValue: Int {
+                var rentAmount: Double {
                     let cleanedInput = rentInput.filter { $0.isNumber }
-                    return Int(cleanedInput) ?? 0
+                    return Double(cleanedInput) ?? 0
                 }
-                var savingValue: Int {
+                var savingAmount: Double {
                     let cleanedInput = savingInput.filter { $0.isNumber }
-                    return Int(cleanedInput) ?? 0
+                    return Double(cleanedInput) ?? 0
                 }
-                var budgetBulanan: Int {
-                    return stipendValue + incomeValue - rentValue
+                var monthlyBudget: Double {
+                    return stipenAmount + otherIncomeAmount - rentAmount
                 }
                 
                 if isCalculated {
@@ -257,7 +257,7 @@ struct BudgetView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Spacer()
-                        Text(budgetBulanan, format: .currency(code: "IDR"))
+                        Text(monthlyBudget, format: .currency(code: "IDR"))
                             .bold()
                             .font(.largeTitle)
                             .foregroundColor(Color(.bgThemeGreen))
@@ -280,7 +280,7 @@ struct BudgetView: View {
                                     Text("Food")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(budgetBulanan*20/100)")
+                                    Text("Rp \(monthlyBudget*20/100)")
                                         .font(.title3)
                                 }
                                 
@@ -301,7 +301,7 @@ struct BudgetView: View {
                                     Text("Transport")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(budgetBulanan*10/100)")
+                                    Text("Rp \(monthlyBudget*10/100)")
                                         .font(.title3)
                                 }
                                 
@@ -322,7 +322,7 @@ struct BudgetView: View {
                                     Text("Utilities")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(budgetBulanan*20/100)")
+                                    Text("Rp \(monthlyBudget*20/100)")
                                         .font(.title3)
                                 }
                                 
@@ -343,7 +343,7 @@ struct BudgetView: View {
                                     Text("Entertaiment")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(budgetBulanan*30/100)")
+                                    Text("Rp \(monthlyBudget*30/100)")
                                         .font(.title3)
                                 }
                                 
@@ -364,7 +364,7 @@ struct BudgetView: View {
                                     Text("Saving")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(budgetBulanan*savingValue/100)")
+                                    Text("Rp \(monthlyBudget*savingAmount/100)")
                                         .font(.title3)
                                 }
                                 

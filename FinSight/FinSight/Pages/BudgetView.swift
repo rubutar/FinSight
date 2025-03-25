@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 struct BudgetView: View {
     @Environment(\.modelContext) var modelContext
@@ -23,7 +24,6 @@ struct BudgetView: View {
     @State var savingAmount: Double = 500_000
     @State var monthlyBudget: Double = 3_500_000
     
-    @State private var greeting: String = "Hello world!"
     @State private var showInsightView = false
     @State private var isBudgetNegative: Bool = false
     @State private var isAlertBudget : Bool = false
@@ -41,16 +41,16 @@ struct BudgetView: View {
     @State private var input: String = ""
     
     private var currencyFormatter: NumberFormatter {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.currencyCode = "IDR" // Kode mata uang IDR
-            formatter.currencySymbol = "Rp" // Mengatur simbol rupiah
-            formatter.groupingSeparator = "."
-            formatter.groupingSize = 3
-            formatter.minimumFractionDigits = 0 // Menentukan jumlah angka desimal (opsional)
-            formatter.maximumFractionDigits = 0
-            return formatter
-        }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "IDR" // Kode mata uang IDR
+        formatter.currencySymbol = "Rp" // Mengatur simbol rupiah
+        formatter.groupingSeparator = "."
+        formatter.groupingSize = 3
+        formatter.minimumFractionDigits = 0 // Menentukan jumlah angka desimal (opsional)
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }
     
     @State var stipenInput : String = ""
     @State var incomeInput : String = ""
@@ -65,9 +65,11 @@ struct BudgetView: View {
     @State var isCalculated : Bool = false
     
     let columns: [GridItem] = [
-            GridItem(.flexible()),
-            GridItem(.flexible())
-        ]
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+
     
     var body: some View {
         NavigationStack(){
@@ -93,37 +95,50 @@ struct BudgetView: View {
                         Spacer()
                         TextField("Rp 5.700.000", text: $stipenInput)
                             .keyboardType(.numberPad)
-                            .onChange(of: stipenInput) { newValue in
-                                // Hapus karakter selain angka
+                            .onReceive(Just(stipenInput)) { newValue in
                                 let cleanedInput = newValue.filter { $0.isNumber }
                                 if let number = Int(cleanedInput) {
-                                    // Format angka dengan menggunakan formatter mata uang
                                     stipenInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
                                 } else {
                                     stipenInput = ""
                                 }
                             }
                             .multilineTextAlignment(.trailing)
+                            .padding()
+
                     }
                     
                     HStack {
-                        Text("Income")
+                        Text("Other Incomes")
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
                         TextField("Rp 0", text: $incomeInput)
                             .keyboardType(.numberPad)
-                            .onChange(of: incomeInput) { newValue in
-                                // Hapus karakter selain angka
+                            .onReceive(Just(incomeInput)) { newValue in
                                 let cleanedInput = newValue.filter { $0.isNumber }
                                 if let number = Int(cleanedInput) {
-                                    // Format angka dengan menggunakan formatter mata uang
                                     incomeInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
                                 } else {
                                     incomeInput = ""
                                 }
                             }
                             .multilineTextAlignment(.trailing)
+                            .padding()
+                        
+                        //                        TextField("Rp 0", text: $incomeInput)
+                        //                            .keyboardType(.numberPad)
+                        //                            .onChange(of: incomeInput) { newValue in
+                        //                                // Hapus karakter selain angka
+                        //                                let cleanedInput = newValue.filter { $0.isNumber }
+                        //                                if let number = Int(cleanedInput) {
+                        //                                    // Format angka dengan menggunakan formatter mata uang
+                        //                                    incomeInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+                        //                                } else {
+                        //                                    incomeInput = ""
+                        //                                }
+                        //                            }
+                        //                            .multilineTextAlignment(.trailing)
                     }
                     
                 }
@@ -132,6 +147,7 @@ struct BudgetView: View {
                 .cornerRadius(10)
                 .padding(.horizontal)
                 
+            
                 Spacer()
                 Spacer()
                 
@@ -148,17 +164,17 @@ struct BudgetView: View {
                         Spacer()
                         TextField("Rp 700.000", text: $rentInput)
                             .keyboardType(.numberPad)
-                            .onChange(of: rentInput) { newValue in
-                                // Hapus karakter selain angka
+                            .onReceive(Just(rentInput)) { newValue in
                                 let cleanedInput = newValue.filter { $0.isNumber }
                                 if let number = Int(cleanedInput) {
-                                    // Format angka dengan menggunakan formatter mata uang
                                     rentInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
                                 } else {
                                     rentInput = ""
                                 }
                             }
                             .multilineTextAlignment(.trailing)
+                            .padding()
+
                     }
                 }
                 .padding()
@@ -176,24 +192,23 @@ struct BudgetView: View {
                     .padding(.horizontal)
                 VStack{
                     HStack {
-                        Text("Savings")
+                        Text("Savings (%)")
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
                         
-                        TextField("Rp 500.000", text: $savingInput)
+                        TextField("20%", text: $savingInput)
                             .keyboardType(.numberPad)
-                            .onChange(of: savingInput) { newValue in
-                                // Hapus karakter selain angka
+                            .onReceive(Just(savingInput)) { newValue in
                                 let cleanedInput = newValue.filter { $0.isNumber }
                                 if let number = Int(cleanedInput) {
-                                    // Format angka dengan menggunakan formatter mata uang
                                     savingInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
                                 } else {
                                     savingInput = ""
                                 }
                             }
                             .multilineTextAlignment(.trailing)
+                            .padding()
                     }
                 }
                 .padding()
@@ -216,6 +231,25 @@ struct BudgetView: View {
                 
                 Spacer()
                 Spacer()
+                var stipendValue: Int {
+                    let cleanedInput = stipenInput.filter { $0.isNumber }
+                    return Int(cleanedInput) ?? 0
+                }
+                var incomeValue: Int {
+                    let cleanedInput = incomeInput.filter { $0.isNumber }
+                    return Int(cleanedInput) ?? 0
+                }
+                var rentValue: Int {
+                    let cleanedInput = rentInput.filter { $0.isNumber }
+                    return Int(cleanedInput) ?? 0
+                }
+                var savingValue: Int {
+                    let cleanedInput = savingInput.filter { $0.isNumber }
+                    return Int(cleanedInput) ?? 0
+                }
+                var budgetBulanan: Int {
+                    return stipendValue + incomeValue - rentValue
+                }
                 
                 if isCalculated {
                     VStack{
@@ -223,7 +257,7 @@ struct BudgetView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Spacer()
-                        Text(monthlyBudget, format: .currency(code: "IDR"))
+                        Text(budgetBulanan, format: .currency(code: "IDR"))
                             .bold()
                             .font(.largeTitle)
                             .foregroundColor(Color(.bgThemeGreen))
@@ -246,7 +280,7 @@ struct BudgetView: View {
                                     Text("Food")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(foodSuggested)")
+                                    Text("Rp \(budgetBulanan*20/100)")
                                         .font(.title3)
                                 }
                                 
@@ -267,7 +301,7 @@ struct BudgetView: View {
                                     Text("Transport")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(transportSuggested)")
+                                    Text("Rp \(budgetBulanan*10/100)")
                                         .font(.title3)
                                 }
                                 
@@ -288,7 +322,7 @@ struct BudgetView: View {
                                     Text("Utilities")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(utilitiesSuggested)")
+                                    Text("Rp \(budgetBulanan*20/100)")
                                         .font(.title3)
                                 }
                                 
@@ -309,7 +343,7 @@ struct BudgetView: View {
                                     Text("Entertaiment")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(entertaimentSuggested)")
+                                    Text("Rp \(budgetBulanan*30/100)")
                                         .font(.title3)
                                 }
                                 
@@ -330,7 +364,7 @@ struct BudgetView: View {
                                     Text("Saving")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(savingSuggested)")
+                                    Text("Rp \(budgetBulanan*savingValue/100)")
                                         .font(.title3)
                                 }
                                 
@@ -339,9 +373,6 @@ struct BudgetView: View {
                                         .font(.headline)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
-                            
-                            
-                            
                         }
                         .padding(.vertical)
                     }

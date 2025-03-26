@@ -56,6 +56,7 @@ struct BudgetView: View {
     @State var incomeInput : String = ""
     @State var rentInput : String = ""
     @State var savingInput : String = ""
+    @State var stipenInput2 : String = ""
     
     @State var isCalculated : Bool = false
         
@@ -78,13 +79,14 @@ struct BudgetView: View {
         let cleanedInput = rentInput.filter { $0.isNumber }
         return Int(cleanedInput) ?? 0
     }
-    var savingValue: Int {
-        let cleanedInput = savingInput.filter { $0.isNumber }
-        return Int(cleanedInput) ?? 0
-    }
+//    var savingValue: Int {
+//        let cleanedInput = savingInput.filter { $0.isNumber }
+//        return Int(cleanedInput) ?? 0
+//    }
     var budgetBulanan: Int {
         return stipendValue + incomeValue - rentValue
     }
+    
     
     var body: some View {
         NavigationStack(){
@@ -95,7 +97,7 @@ struct BudgetView: View {
                 //                }
                 //                Text("Incomes \(budgetData.count) ")
                 //-------------
-                Text("Incomes")
+                Text("Incomes \(stipenInput2)")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -108,18 +110,25 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField("Rp 5.700.000", text: $stipenInput)
-                            .keyboardType(.numberPad)
-                            .onReceive(Just(stipenInput)) { newValue in
-                                let cleanedInput = newValue.filter { $0.isNumber }
-                                if let number = Int(cleanedInput) {
-                                    stipenInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
-                                } else {
-                                    stipenInput = ""
-                                }
-                            }
+//                        TextField("Rp 5.700.000", text: $stipenInput)
+//                            .keyboardType(.numberPad)
+//                            .onReceive(Just(stipenInput)) { newValue in
+//                                let cleanedInput = newValue.filter { $0.isNumber }
+//                                if let number = Int(cleanedInput) {
+//                                    stipenInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+//                                } else {
+//                                    stipenInput = ""
+//                                }
+//                            }
+//                            .multilineTextAlignment(.trailing)
+//                            .padding()
+                        
+                        TextField("Rp 5.700.000", value: $stipenAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+//                            .onSubmit {
+//                                updateBudget()
+//                            }
                             .multilineTextAlignment(.trailing)
-                            .padding()
 
                     }
                     
@@ -128,18 +137,25 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField("Rp 0", text: $incomeInput)
-                            .keyboardType(.numberPad)
-                            .onReceive(Just(incomeInput)) { newValue in
-                                let cleanedInput = newValue.filter { $0.isNumber }
-                                if let number = Int(cleanedInput) {
-                                    incomeInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
-                                } else {
-                                    incomeInput = ""
-                                }
-                            }
+                        TextField("Rp 0", value: $otherIncomeAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+//                            .onSubmit {
+//                                updateBudget()
+//                            }
                             .multilineTextAlignment(.trailing)
-                            .padding()
+                        
+//                        TextField("Rp 0", text: $incomeInput)
+//                            .keyboardType(.numberPad)
+//                            .onReceive(Just(incomeInput)) { newValue in
+//                                let cleanedInput = newValue.filter { $0.isNumber }
+//                                if let number = Int(cleanedInput) {
+//                                    incomeInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+//                                } else {
+//                                    incomeInput = ""
+//                                }
+//                            }
+//                            .multilineTextAlignment(.trailing)
+//                            .padding()
                         
                         //                        TextField("Rp 0", text: $incomeInput)
                         //                            .keyboardType(.numberPad)
@@ -177,18 +193,24 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-                        TextField("Rp 700.000", text: $rentInput)
-                            .keyboardType(.numberPad)
-                            .onReceive(Just(rentInput)) { newValue in
-                                let cleanedInput = newValue.filter { $0.isNumber }
-                                if let number = Int(cleanedInput) {
-                                    rentInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
-                                } else {
-                                    rentInput = ""
-                                }
-                            }
+                        TextField("Rp 700.000", value: $rentAmount, format: .currency(code: "IDR"))
+                            .keyboardType(.decimalPad)
+//                            .onSubmit {
+//                                updateBudget()
+//                            }
                             .multilineTextAlignment(.trailing)
-                            .padding()
+//                        TextField("Rp 700.000", text: $rentInput)
+//                            .keyboardType(.numberPad)
+//                            .onReceive(Just(rentInput)) { newValue in
+//                                let cleanedInput = newValue.filter { $0.isNumber }
+//                                if let number = Int(cleanedInput) {
+//                                    rentInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
+//                                } else {
+//                                    rentInput = ""
+//                                }
+//                            }
+//                            .multilineTextAlignment(.trailing)
+//                            .padding()
 
                     }
                 }
@@ -240,25 +262,25 @@ struct BudgetView: View {
                 Spacer()
                 Spacer()
 
-                var stipenAmount: Double {
-                    let cleanedInput = stipenInput.filter { $0.isNumber }
-                    return Double(cleanedInput) ?? 0
-                }
-                var otherIncomeAmount: Double {
-                    let cleanedInput = incomeInput.filter { $0.isNumber }
-                    return Double(cleanedInput) ?? 0
-                }
-                var rentAmount: Double {
-                    let cleanedInput = rentInput.filter { $0.isNumber }
-                    return Double(cleanedInput) ?? 0
-                }
-                var savingAmount: Double {
-                    let cleanedInput = savingInput.filter { $0.isNumber }
-                    return Double(cleanedInput) ?? 0
-                }
-                var monthlyBudget: Double {
-                    return stipenAmount + otherIncomeAmount - rentAmount
-                }
+//                var stipenAmount: Double {
+//                    let cleanedInput = stipenInput.filter { $0.isNumber }
+//                    return Double(cleanedInput) ?? 0
+//                }
+//                var otherIncomeAmount: Double {
+//                    let cleanedInput = incomeInput.filter { $0.isNumber }
+//                    return Double(cleanedInput) ?? 0
+//                }
+//                var rentAmount: Double {
+//                    let cleanedInput = rentInput.filter { $0.isNumber }
+//                    return Double(cleanedInput) ?? 0
+//                }
+//                var savingAmount: Double {
+//                    let cleanedInput = savingInput.filter { $0.isNumber }
+//                    return Double(cleanedInput) ?? 0
+//                }
+//                var monthlyBudget: Double {
+//                    return stipenAmount + otherIncomeAmount - rentAmount
+//                }
                 
                 if isCalculated {
                     VStack{
@@ -297,7 +319,7 @@ struct BudgetView: View {
                                     Text("Food")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(monthlyBudget*20/100)")
+                                    Text("Rp \(Int(monthlyBudget*20/100))")
                                         .font(.title3)
                                 }
                                 
@@ -318,7 +340,7 @@ struct BudgetView: View {
                                     Text("Transport")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(monthlyBudget*10/100)")
+                                    Text("Rp \(Int(monthlyBudget*10/100))")
                                         .font(.title3)
                                 }
                                 
@@ -339,7 +361,7 @@ struct BudgetView: View {
                                     Text("Utilities")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(monthlyBudget*20/100)")
+                                    Text("Rp \(Int(monthlyBudget*20/100))")
                                         .font(.title3)
                                 }
                                 
@@ -360,7 +382,7 @@ struct BudgetView: View {
                                     Text("Entertaiment")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(monthlyBudget*30/100)")
+                                    Text("Rp \(Int(monthlyBudget*30/100))")
                                         .font(.title3)
                                 }
                                 
@@ -381,7 +403,7 @@ struct BudgetView: View {
                                     Text("Saving")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(monthlyBudget*savingAmount/100)")
+                                    Text("Rp \(Int(savingAmount))")
                                         .font(.title3)
                                 }
                                 
@@ -421,8 +443,10 @@ struct BudgetView: View {
                     // If data exists, set stipenAmount from the database
                     print("tanggal di buat : \(firstItem.created_at)")
     
-                    
-                    stipenInput = String(firstItem.stipen)
+                    stipenInput2 = "1000000"
+                    stipenInput = "1000000"
+                    //String(Int(firstItem.stipen))
+                    savingAmount = firstItem.stipen
                     otherIncomeAmount = firstItem.income
                     rentAmount = firstItem.rent
 //                    waterAmount = firstItem.water
@@ -430,7 +454,12 @@ struct BudgetView: View {
 //                    otherExpensesAmount = firstItem.others
                     savingAmount = firstItem.savings
                     monthlyBudget = firstItem.monthly_budget
+                    
+                    
+                    
                     print("all : \(stipenInput) - \(otherIncomeAmount) - \(rentAmount) - \(savingAmount) - \(monthlyBudget)")
+                    print(type(of: stipenInput))
+                    print(stipendValue)
                 } else {
                     // add initial data
 //                    addBudget()
@@ -501,7 +530,8 @@ struct BudgetView: View {
     }
     
     func updateBudget(){
-        if !stipenInput.isEmpty && !incomeInput.isEmpty && !rentInput.isEmpty && !savingInput.isEmpty {
+        isCalculated = false
+        if !stipenAmount.isNaN && !otherIncomeAmount.isNaN && !rentAmount.isNaN && !savingInput.isEmpty {
             addBudget()
             isCalculated = true
         } else {
@@ -511,8 +541,11 @@ struct BudgetView: View {
     }
     
     func addBudget(){
+        monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
+        let percentSaving = Double(savingInput)!
+        savingAmount = monthlyBudget*percentSaving/100
         let tambahData = BudgetData(
-            stipen:Double(stipendValue),income:Double(incomeValue), rent:Double(rentValue), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingValue), monthly_budget:Double(budgetBulanan)
+            stipen:Double(stipenAmount),income:Double(otherIncomeAmount), rent:Double(rentAmount), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)
         )
         modelContext.insert(tambahData)
     }

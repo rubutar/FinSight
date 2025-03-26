@@ -97,7 +97,7 @@ struct BudgetView: View {
                 //                }
                 //                Text("Incomes \(budgetData.count) ")
                 //-------------
-                Text("Incomes \(monthlyBudget)")
+                Text("Incomes")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -222,32 +222,32 @@ struct BudgetView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Savings")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-                VStack{
-                    HStack {
-                        Text("Savings (%)")
-                            .frame(width: 70, alignment: .leading)
-                            .font(.body)
-                        Spacer()
-                        
-                        TextField("20%", text: $savingInput)
-                            .keyboardType(.numberPad)
-
-                            .multilineTextAlignment(.trailing)
-                            .padding()
-                    }
-                }
-                .padding()
-                .background(Color("bgColor5"))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                
-                Spacer()
-                Spacer()
+//                Text("Savings")
+//                    .font(.title3)
+//                    .fontWeight(.bold)
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//                    .padding(.horizontal)
+//                VStack{
+//                    HStack {
+//                        Text("Savings (%)")
+//                            .frame(width: 70, alignment: .leading)
+//                            .font(.body)
+//                        Spacer()
+//                        
+//                        TextField("20%", text: $savingInput)
+//                            .keyboardType(.numberPad)
+//
+//                            .multilineTextAlignment(.trailing)
+//                            .padding()
+//                    }
+//                }
+//                .padding()
+//                .background(Color("bgColor5"))
+//                .cornerRadius(10)
+//                .padding(.horizontal)
+//                
+//                Spacer()
+//                Spacer()
                 
                 Button(action: updateBudget) {
                     Text("Calculate")
@@ -403,7 +403,7 @@ struct BudgetView: View {
                                     Text("Saving")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                    Text("Rp \(Int(savingAmount))")
+                                    Text("Rp \(Int(monthlyBudget*20/100))")
                                         .font(.title3)
                                 }
                                 
@@ -452,6 +452,7 @@ struct BudgetView: View {
                         let bg = Int(ss/mb)
                         print("bg \(bg)")
                         savingInput = String(Int(xx))
+                        isCalculated = true
                     }
                     
                     
@@ -546,7 +547,7 @@ struct BudgetView: View {
     
     func updateBudget(){
         isCalculated = false
-        if !stipenAmount.isNaN && !otherIncomeAmount.isNaN && !rentAmount.isNaN && !savingInput.isEmpty {
+        if !stipenAmount.isNaN && !otherIncomeAmount.isNaN && !rentAmount.isNaN {
             addBudget()
             isCalculated = true
         } else {
@@ -557,11 +558,11 @@ struct BudgetView: View {
     
     func addBudget(){
         monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
-        let percentSaving = Double(savingInput)!
-        savingAmount = monthlyBudget*percentSaving/100
-        let doublesaving = savingAmount/monthlyBudget
-        savingInput = String(Int(savingAmount/monthlyBudget*100))
-        print("saving \(savingInput)")
+//        let percentSaving = Double(savingInput)!
+//        savingAmount = monthlyBudget*percentSaving/100
+//        let doublesaving = savingAmount/monthlyBudget
+//        savingInput = String(Int(savingAmount/monthlyBudget*100))
+//        print("saving \(savingInput)")
         print("monthlyBudget \(monthlyBudget)")
         let tambahData = BudgetData(
             stipen:Double(stipenAmount),income:Double(otherIncomeAmount), rent:Double(rentAmount), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)

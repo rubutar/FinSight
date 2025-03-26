@@ -10,6 +10,7 @@ import SwiftData
 import Combine
 
 struct BudgetView: View {
+    
     @Environment(\.modelContext) var modelContext
     @FocusState private var keyboardIsFocused: Bool
     
@@ -80,7 +81,9 @@ struct BudgetView: View {
         return Int(cleanedInput) ?? 0
     }
     
-    
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder) , to: nil, from: nil, for: nil)
+    }
     
     var body: some View {
         NavigationStack(){
@@ -107,9 +110,10 @@ struct BudgetView: View {
                         
                         TextField("Rp 5.700.000", value: $stipenAmount, format: .currency(code: "IDR"))
                             .keyboardType(.decimalPad)
-//                            .onSubmit {
-//                                updateBudget()
-//                            }
+                            .focused($keyboardIsFocused)
+                            .onTapGesture{
+                                keyboardIsFocused = !keyboardIsFocused
+                            }
                             .multilineTextAlignment(.trailing)
 
                     }
@@ -121,9 +125,10 @@ struct BudgetView: View {
                         Spacer()
                         TextField("Rp 0", value: $otherIncomeAmount, format: .currency(code: "IDR"))
                             .keyboardType(.decimalPad)
-//                            .onSubmit {
-//                                updateBudget()
-//                            }
+                            .focused($keyboardIsFocused)
+                            .onTapGesture{
+                                keyboardIsFocused = !keyboardIsFocused
+                            }
                             .multilineTextAlignment(.trailing)
                         
 //                        TextField("Rp 0", text: $incomeInput)
@@ -177,9 +182,10 @@ struct BudgetView: View {
                         Spacer()
                         TextField("Rp 700.000", value: $rentAmount, format: .currency(code: "IDR"))
                             .keyboardType(.decimalPad)
-//                            .onSubmit {
-//                                updateBudget()
-//                            }
+                            .focused($keyboardIsFocused)
+                            .onTapGesture{
+                                keyboardIsFocused = !keyboardIsFocused
+                            }
                             .multilineTextAlignment(.trailing)
 //                        TextField("Rp 700.000", text: $rentInput)
 //                            .keyboardType(.numberPad)
@@ -233,10 +239,10 @@ struct BudgetView: View {
                 
                 Button(action: updateBudget) {
                     Text("Calculate")
-                }.foregroundStyle(Color("bgThemeGreen"))
-                    .font(.subheadline .bold())
+                }.foregroundStyle(Color(.white))
+                    .font(.body .bold())
                     .padding()
-                    .background(Color("bgColor5"))
+                    .background(Color(.bgThemeGreen))
                     .cornerRadius(10)
                     .padding(.horizontal)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -247,13 +253,18 @@ struct BudgetView: View {
                 if isCalculated {
                     VStack{
                         Text("Based on calculation, your monthly budget for the other expense will be:")
-                            .font(.headline)
+                            .font(.body)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                        Spacer()
+                        Spacer()
                         Spacer()
                         Text(monthlyBudget, format: .currency(code: "IDR"))
                             .bold()
                             .font(.largeTitle)
                             .foregroundColor(Color(.bgThemeGreen))
+                        Spacer()
+                        Spacer()
                         Spacer()
                         Spacer()
                         HStack{
@@ -273,105 +284,110 @@ struct BudgetView: View {
                         VStack {
                             HStack(alignment: .center) {
                                 Image(systemName: "fork.knife.circle")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 30))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Food")
-                                        .font(.headline)
+                                        .font(.body)
                                         .fontWeight(.bold)
                                     Text("Rp \(Int(monthlyBudget*20/100))")
-                                        .font(.title3)
+                                        .font(.body)
                                 }
                                 
                                 VStack(alignment: .trailing) {
                                     Text("20%")
-                                        .font(.headline)
+                                        .font(.body)
+                                        .fontWeight(.bold)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
                                 Image(systemName: "car.circle")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 30))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Transport")
-                                        .font(.headline)
+                                        .font(.body)
                                         .fontWeight(.bold)
                                     Text("Rp \(Int(monthlyBudget*10/100))")
-                                        .font(.title3)
+                                        .font(.body)
                                 }
                                 
                                 VStack(alignment: .trailing) {
                                     Text("10%")
-                                        .font(.headline)
+                                        .font(.body)
+                                        .fontWeight(.bold)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
                                 Image(systemName: "bolt.circle")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 30))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Utilities")
-                                        .font(.headline)
+                                        .font(.body)
                                         .fontWeight(.bold)
                                     Text("Rp \(Int(monthlyBudget*20/100))")
-                                        .font(.title3)
+                                        .font(.body)
                                 }
                                 
                                 VStack(alignment: .trailing) {
                                     Text("20%")
-                                        .font(.headline)
+                                        .font(.body)
+                                        .fontWeight(.bold)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
                                 Image(systemName: "theatermasks.circle")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 30))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Entertaiment")
-                                        .font(.headline)
+                                        .font(.body)
                                         .fontWeight(.bold)
                                     Text("Rp \(Int(monthlyBudget*30/100))")
-                                        .font(.title3)
+                                        .font(.body)
                                 }
                                 
                                 VStack(alignment: .trailing) {
                                     Text("30%")
-                                        .font(.headline)
+                                        .font(.body)
+                                        .fontWeight(.bold)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
                             Spacer()
                             Spacer()
                             HStack(alignment: .top) {
                                 Image(systemName: "creditcard.circle")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 30))
                                     .foregroundColor(Color(.bgThemeGreen))
                                     .padding(.trailing, 5)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Saving")
-                                        .font(.headline)
+                                        .font(.body)
                                         .fontWeight(.bold)
                                     Text("Rp \(Int(monthlyBudget*20/100))")
-                                        .font(.title3)
+                                        .font(.body)
                                 }
                                 
                                 VStack(alignment: .trailing) {
                                     Text("20%")
-                                        .font(.headline)
+                                        .font(.body)
+                                        .fontWeight(.bold)
                                 }.frame(maxWidth: .infinity, alignment: .trailing)
                             }
                         }
@@ -388,7 +404,7 @@ struct BudgetView: View {
                     Spacer()
                     Button(action: validate) {
                         Text("Get the Insights")
-                            .font(.title2 .bold())
+                            .font(.body .bold())
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color("bgThemeGreen"))
@@ -456,6 +472,10 @@ struct BudgetView: View {
         } content: {
             ContentBudgetView()
         }
+        
+        .simultaneousGesture(TapGesture().onEnded{
+            dismissKeyboard()
+        })
     }
     
     

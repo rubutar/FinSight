@@ -15,7 +15,7 @@ struct EditExpenseView: View {
     
     var body: some View {
         Form {
-            TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR"))
+            TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR")).keyboardType(.decimalPad)
             TextField("Note", text: $expenseData.note)
             DatePicker("Date", selection: $expenseData.date, displayedComponents: .date)
                 .datePickerStyle(.compact)

@@ -119,11 +119,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressFood >= 1 {
-                        Text("\((progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
+                        Text("\((progressFood * 100), specifier: "%.0f")%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\((progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
+                        Text("\((progressFood * 100), specifier: "%.0f")%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }

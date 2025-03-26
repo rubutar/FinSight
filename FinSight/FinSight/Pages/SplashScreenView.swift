@@ -9,24 +9,24 @@ import SwiftUI
 
 struct SplashScreenView: View {
     @State private var isSplashScreenActive = true
-            
-        var body: some View {
-            ZStack {
-                if isSplashScreenActive {
-                    SplashScreen()
-                } else {
-                    MainView()
-                }
+    
+    var body: some View {
+        ZStack {
+            if isSplashScreenActive {
+                SplashScreen()
+            } else {
+                MainView()
             }
-            .onAppear {
-                // Menunda tampilan splash screen selama 3 detik sebelum pindah ke MainView
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    withAnimation {
-                        isSplashScreenActive = false
-                    }
+        }
+        .onAppear {
+            // Menunda tampilan splash screen selama 3 detik sebelum pindah ke MainView
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                withAnimation {
+                    isSplashScreenActive = false
                 }
             }
         }
+    }
 }
 
 struct SplashScreen: View {
@@ -39,9 +39,11 @@ struct SplashScreen: View {
             Text("FinSight")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-            Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
-                .font(.subheadline)
-                .foregroundColor(.bgThemeGreen)
+            //            Text("Smart Budgeting, Clear Insights. Track your expenses, manage your budget, and gain valuable financial insights effortlessly!")
+            Text("Spend Smart, Make Your Stipend Last!")
+                .fontWeight(.bold)
+                .font(.body)
+                .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
                 .padding(.bottom,100)
             

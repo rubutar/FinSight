@@ -65,13 +65,14 @@ struct InsightPage: View {
         VStack(alignment: .leading) {
             OneDimensionalBar()
                 .padding()
-            LazyVGrid(columns: columns, spacing: 2) {
-                ForEach(categories, id: \.self) { category in
-                    let total = totalByCategory[category] ?? 0
-                    let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
-                    SmallOneDimensionalBar(spentAmount: 900_000, totalBudget: 1_000_000)
-                }
-            }
+            SmallOneDimensionalBar()
+//            LazyVGrid(columns: columns, spacing: 2) {
+//                ForEach(categories, id: \.self) { category in
+//                    let total = totalByCategory[category] ?? 0
+//                    let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
+//                    SmallOneDimensionalBar(spentAmount: 900_000, totalBudget: 1_000_000)
+//                }
+//            }
             
         }.navigationTitle("Insights")
             .navigationBarBackButtonHidden(true)

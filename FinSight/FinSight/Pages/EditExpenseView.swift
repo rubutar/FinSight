@@ -22,8 +22,8 @@ struct EditExpenseView: View {
             Picker("Category", selection: $expenseData.category) {
                 Text("Food").tag("Food")
                 Text("Transport").tag("Transport")
-                Text("Shopping").tag("Shopping")
-                Text("Others").tag("Others")
+                Text("Utilities").tag("Utilities")
+                Text("Entertainment").tag("Entertainment")
             }
             .pickerStyle(.menu)
         }

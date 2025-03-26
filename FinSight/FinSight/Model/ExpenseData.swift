@@ -17,7 +17,7 @@ class ExpenseData {
     var date: Date
     var category: String
     
-    init(amount: Double = 0.0, note: String = "", date: Date = .now, category: String = "Others") {
+    init(amount: Double = 0.0, note: String = "", date: Date = .now, category: String = "Food") {
         self.amount = amount
         self.note = note
         self.date = date

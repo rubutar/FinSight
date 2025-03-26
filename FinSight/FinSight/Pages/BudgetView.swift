@@ -97,7 +97,7 @@ struct BudgetView: View {
                 //                }
                 //                Text("Incomes \(budgetData.count) ")
                 //-------------
-                Text("Incomes \(stipenInput2)")
+                Text("Incomes \(monthlyBudget)")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -441,8 +441,23 @@ struct BudgetView: View {
                 // Check if there's data in the database when the view appears
                 if let firstItem = budgetData.first {
                     // If data exists, set stipenAmount from the database
-                    print("tanggal di buat : \(firstItem.created_at)")
-    
+                    print("tanggal di buat : \(firstItem.created_at) \(firstItem.savings) \(firstItem.monthly_budget)")
+                    let ss = firstItem.savings
+                    let mb = firstItem.monthly_budget
+                    let xx = ss/mb*100
+                    print("ss \(ss) mb \(mb) xx \(xx)")
+                    print(type(of: ss))
+                    print(type(of: mb))
+                    if mb != 0 {
+                        let bg = Int(ss/mb)
+                        print("bg \(bg)")
+                        savingInput = String(Int(xx))
+                    }
+                    
+                    
+//                    savingInput = firstItem.savings/firstItem.monthly_budget*100
+//                    String((Int(firstItem.savings)/Int(firstItem.monthly_budget)*100))
+//                    savingInput = String((Int(firstItem.savings)/Int(firstItem.monthly_budget)*100))
                     stipenInput2 = "1000000"
                     stipenInput = "1000000"
                     //String(Int(firstItem.stipen))
@@ -544,6 +559,10 @@ struct BudgetView: View {
         monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
         let percentSaving = Double(savingInput)!
         savingAmount = monthlyBudget*percentSaving/100
+        let doublesaving = savingAmount/monthlyBudget
+        savingInput = String(Int(savingAmount/monthlyBudget*100))
+        print("saving \(savingInput)")
+        print("monthlyBudget \(monthlyBudget)")
         let tambahData = BudgetData(
             stipen:Double(stipenAmount),income:Double(otherIncomeAmount), rent:Double(rentAmount), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)
         )

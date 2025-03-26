@@ -214,14 +214,7 @@ struct BudgetView: View {
                         
                         TextField("20%", text: $savingInput)
                             .keyboardType(.numberPad)
-                            .onReceive(Just(savingInput)) { newValue in
-                                let cleanedInput = newValue.filter { $0.isNumber }
-                                if let number = Int(cleanedInput) {
-                                    savingInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
-                                } else {
-                                    savingInput = ""
-                                }
-                            }
+
                             .multilineTextAlignment(.trailing)
                             .padding()
                     }

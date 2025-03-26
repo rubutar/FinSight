@@ -55,13 +55,11 @@ struct SmallOneDimensionalBar: View {
     //    var progress: Double {
     //        min((totalByCategory["Food"] ?? 0) / foodBudget , 1.0) // Keeps it within 0-1 range
     //    }
-    var progress: Double = 0
+    var progress: Double = 0.3
     
     var body: some View {
         
-        
-        Text("\(totalFood)")
-        
+                
         LazyVGrid(columns: columns, spacing: 2) {
             var progressFood: Double {
                 min((totalByCategory["Food"] ?? 0) / foodBudget , 1.0) // Keeps it within 0-1 range
@@ -89,12 +87,12 @@ struct SmallOneDimensionalBar: View {
                     // Foreground Bar (Used)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.blue)
-                        .frame(width: CGFloat(progressFood) * 150, height: 20)
+                        .frame(width: CGFloat(progress) * 150, height: 20)
                     
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progressFood * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
                     .font(.caption)
                     .foregroundColor(.black)
             }
@@ -135,12 +133,12 @@ struct SmallOneDimensionalBar: View {
                     // Foreground Bar (Used)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.orange)
-                        .frame(width: max(CGFloat(progressUtilities) * 150, 1), height: 20) // Prevents zero width
+                        .frame(width: CGFloat(progress) * 150, height: 20) // Prevents zero width
 
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progressTransport * 100))%  (Rp. \(totalFood) of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. \(totalFood) of Rp. 1.000.000)")
                     .font(.caption)
                     .foregroundColor(.black)
             }
@@ -158,12 +156,12 @@ struct SmallOneDimensionalBar: View {
                     // Foreground Bar (Used)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.purple)
-                        .frame(width: CGFloat(progressEntertainment) * 150, height: 20)
+                        .frame(width: CGFloat(progress) * 150, height: 20)
                     
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progressEntertainment * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
                     .font(.caption)
                     .foregroundColor(.black)
             }

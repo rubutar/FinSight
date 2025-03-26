@@ -24,7 +24,7 @@ struct InsightPage: View {
         Dictionary(grouping: expensesData, by: { $0.category })
             .mapValues { $0.reduce(0) { $0 + $1.amount } }
     }
-    private let categories = ["Food", "Shopping", "Transport", "Others"]
+//    private let categories = ["Food", "Shopping", "Transport", "Others"]
     
     private let columns = [
         GridItem(.flexible(), spacing: 1),

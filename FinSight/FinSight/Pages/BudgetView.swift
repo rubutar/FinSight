@@ -17,9 +17,9 @@ struct BudgetView: View {
     @Query private var budgetData: [BudgetData]
     @Query private var items: [Item]
     
-    @State var stipenAmount: Double = 5_700_000
-    @State var otherIncomeAmount: Double = 0.0
-    @State var rentAmount: Double = 700_000
+    @State var stipenAmount: Double?
+    @State var otherIncomeAmount: Double?
+    @State var rentAmount: Double?
     @State var waterAmount: Double = 200_000
     @State var electricityAmount: Double = 200_000
     @State var otherExpensesAmount: Double = 200_000
@@ -79,6 +79,10 @@ struct BudgetView: View {
     var rentValue: Int {
         let cleanedInput = rentInput.filter { $0.isNumber }
         return Int(cleanedInput) ?? 0
+    }
+    
+    var calMonthly: Double {
+        return stipenAmount! + otherIncomeAmount! - rentAmount!
     }
     
     func dismissKeyboard() {
@@ -503,7 +507,7 @@ struct BudgetView: View {
     func updateBudget(){
         print("updateBudget")
         isCalculated = false
-        if !stipenAmount.isNaN && !otherIncomeAmount.isNaN && !rentAmount.isNaN {
+        if !stipenAmount!.isNaN && !otherIncomeAmount!.isNaN && !rentAmount!.isNaN {
             addBudget()
             isCalculated = true
             keyboardIsFocused=false
@@ -514,9 +518,10 @@ struct BudgetView: View {
     }
     
     func addBudget(){
-        monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
+//        monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
+        monthlyBudget = calMonthly
         let tambahData = BudgetData(
-            stipen:Double(stipenAmount),income:Double(otherIncomeAmount), rent:Double(rentAmount), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)
+            stipen:Double(stipenAmount!),income:Double(otherIncomeAmount!), rent:Double(rentAmount!), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)
         )
         modelContext.insert(tambahData)
     }

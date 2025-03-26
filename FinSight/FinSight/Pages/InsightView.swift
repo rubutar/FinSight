@@ -7,7 +7,7 @@ struct InsightPage: View {
     @Query var expensesData: [ExpenseData]
     @State var messageInsight : String = ""
     @State private var showAddExpenseView = false  // State to control AddExpenseView presentation
-
+    
     
     var savingBudget: Double {
         budgetData.first?.savings ?? 0
@@ -24,12 +24,12 @@ struct InsightPage: View {
         Dictionary(grouping: expensesData, by: { $0.category })
             .mapValues { $0.reduce(0) { $0 + $1.amount } }
     }
-//    private let categories = ["Food", "Shopping", "Transport", "Others"]
+    //    private let categories = ["Food", "Shopping", "Transport", "Others"]
     
     private let columns = [
         GridItem(.flexible(), spacing: 1),
         GridItem(.flexible(), spacing: 1)
-        ]
+    ]
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -50,10 +50,10 @@ struct InsightPage: View {
         }
         print("weeklyTotals: \(weeklyTotals)")
         // Print the results
-//        for (week, total) in weeklyTotals {
-//            print("Week starting \(week): Total = \(total)")
-//        }
-//        print(Array(weeklyTotals)[2])
+        //        for (week, total) in weeklyTotals {
+        //            print("Week starting \(week): Total = \(total)")
+        //        }
+        //        print(Array(weeklyTotals)[2])
         return weeklyTotals
     }
     
@@ -61,79 +61,85 @@ struct InsightPage: View {
     
     var body: some View {
         GeometryReader { g in
-        ScrollView{
-            // Version 1 - white bacground
-            //        ScrollView{
-            VStack(alignment: .leading) {
+            ScrollView{
+                // Version 1 - white bacground
+                //        ScrollView{
                 OneDimensionalBar()
                     .padding()
-                SmallOneDimensionalBar()
-                //            LazyVGrid(columns: columns, spacing: 2) {
-                //                ForEach(categories, id: \.self) { category in
-                //                    let total = totalByCategory[category] ?? 0
-                //                    let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
-                //                    SmallOneDimensionalBar(spentAmount: 900_000, totalBudget: 1_000_000)
-                //                }
-                //            }
-                
-            }.navigationTitle("Insights")
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        NavigationLink(destination: BudgetView()){
-                            HStack {
-                                Image(systemName: "chevron.backward")
-                                Text("Budget")
-                            }.foregroundStyle(Color("bgThemeGreen"))
-                        }
-                    }
-                    //            }.onAppear(){
-                    //                MotivationInsight()
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink {
-                            AddExpenseView(expenseData: ExpenseData(amount: 0, note: "", date: Date(), category: "Food"))
-                        } label: {
-                            Text("Add Expense")
-                                .foregroundColor(.bgThemeGreen)
-                        }
-                    }
+                HStack() {
+                    Text("    Details")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    Spacer()
                 }
-            VStack(alignment: .leading) {
-                Text("Expenses History")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.horizontal)
-                    .padding(.top, 8)
-                List {
-                    ForEach(expensesData) { expenseData in
-                        NavigationLink(destination: EditExpenseView(expenseData: expenseData)) {
-                            VStack(alignment: .leading) {
+                VStack(alignment: .center) {
+                    SmallOneDimensionalBar()
+                    //            LazyVGrid(columns: columns, spacing: 2) {
+                    //                ForEach(categories, id: \.self) { category in
+                    //                    let total = totalByCategory[category] ?? 0
+                    //                    let percentage = totalExpenses > 0 ? (total / totalExpenses * 100).rounded() : 0
+                    //                    SmallOneDimensionalBar(spentAmount: 900_000, totalBudget: 1_000_000)
+                    //                }
+                    //            }
+                    
+                }.navigationTitle("Insights")
+                    .navigationBarBackButtonHidden(true)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            NavigationLink(destination: BudgetView()){
                                 HStack {
-                                    Text(expenseData.category)
-                                        .font(.footnote)
-                                        .foregroundStyle(Color("bgThemeGreen"))
-                                    Spacer()
-                                    Text("\(expenseData.amount, format: .currency(code: "IDR"))")
-                                        .font(.caption2)
-                                }
-                                Text(expenseData.note)
-                                    .font(.caption2)
-                                Text(expenseData.date, format: .dateTime.day().month().year())
-                                    .font(.caption)
+                                    Image(systemName: "chevron.backward")
+                                    Text("Budget")
+                                }.foregroundStyle(Color("bgThemeGreen"))
                             }
-                            .padding(8)
-                            .background(Color("bgColor5"))
-                            .cornerRadius(10)
+                        }
+                        //            }.onAppear(){
+                        //                MotivationInsight()
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink {
+                                AddExpenseView(expenseData: ExpenseData(amount: 0, note: "", date: Date(), category: "Food"))
+                            } label: {
+                                Text("Add Expense")
+                                    .foregroundColor(.bgThemeGreen)
+                            }
                         }
                     }
+                VStack(alignment: .leading) {
+                    Text("Expenses History")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                    List {
+                        ForEach(expensesData) { expenseData in
+                            NavigationLink(destination: EditExpenseView(expenseData: expenseData)) {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text(expenseData.category)
+                                            .font(.headline)
+                                            .foregroundStyle(Color("bgThemeGreen"))
+                                        Spacer()
+                                        Text("\(expenseData.amount, format: .currency(code: "IDR"))")
+                                            .font(.headline)
+                                    }
+                                    Text(expenseData.note)
+                                        .font(.body)
+                                    Text(expenseData.date, format: .dateTime.day().month().year())
+                                        .font(.body)
+                                }
+                                .padding(8)
+                                .background(Color("bgColor5"))
+                                .cornerRadius(10)
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
+                    
+                    Spacer()
                 }
-                .listStyle(.plain)
-                
-                Spacer()
+                .frame(width: g.size.width - 5, height: g.size.height - 50, alignment: .center)
             }
-            .frame(width: g.size.width - 5, height: g.size.height - 50, alignment: .center)
         }
-    }
     }
     // Function to give each category a fixed color
     func categoryColor(_ category: String) -> Color {

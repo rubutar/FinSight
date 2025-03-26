@@ -11,6 +11,7 @@ import Combine
 
 struct BudgetView: View {
     @Environment(\.modelContext) var modelContext
+    @FocusState private var keyboardIsFocused: Bool
     
     @Query private var budgetData: [BudgetData]
     @Query private var items: [Item]
@@ -56,7 +57,6 @@ struct BudgetView: View {
     @State var incomeInput : String = ""
     @State var rentInput : String = ""
     @State var savingInput : String = ""
-    @State var stipenInput2 : String = ""
     
     @State var isCalculated : Bool = false
         
@@ -79,13 +79,7 @@ struct BudgetView: View {
         let cleanedInput = rentInput.filter { $0.isNumber }
         return Int(cleanedInput) ?? 0
     }
-//    var savingValue: Int {
-//        let cleanedInput = savingInput.filter { $0.isNumber }
-//        return Int(cleanedInput) ?? 0
-//    }
-    var budgetBulanan: Int {
-        return stipendValue + incomeValue - rentValue
-    }
+    
     
     
     var body: some View {
@@ -110,18 +104,6 @@ struct BudgetView: View {
                             .frame(width: 70, alignment: .leading)
                             .font(.body)
                         Spacer()
-//                        TextField("Rp 5.700.000", text: $stipenInput)
-//                            .keyboardType(.numberPad)
-//                            .onReceive(Just(stipenInput)) { newValue in
-//                                let cleanedInput = newValue.filter { $0.isNumber }
-//                                if let number = Int(cleanedInput) {
-//                                    stipenInput = currencyFormatter.string(from: NSNumber(value: number)) ?? ""
-//                                } else {
-//                                    stipenInput = ""
-//                                }
-//                            }
-//                            .multilineTextAlignment(.trailing)
-//                            .padding()
                         
                         TextField("Rp 5.700.000", value: $stipenAmount, format: .currency(code: "IDR"))
                             .keyboardType(.decimalPad)
@@ -262,26 +244,6 @@ struct BudgetView: View {
                 Spacer()
                 Spacer()
 
-//                var stipenAmount: Double {
-//                    let cleanedInput = stipenInput.filter { $0.isNumber }
-//                    return Double(cleanedInput) ?? 0
-//                }
-//                var otherIncomeAmount: Double {
-//                    let cleanedInput = incomeInput.filter { $0.isNumber }
-//                    return Double(cleanedInput) ?? 0
-//                }
-//                var rentAmount: Double {
-//                    let cleanedInput = rentInput.filter { $0.isNumber }
-//                    return Double(cleanedInput) ?? 0
-//                }
-//                var savingAmount: Double {
-//                    let cleanedInput = savingInput.filter { $0.isNumber }
-//                    return Double(cleanedInput) ?? 0
-//                }
-//                var monthlyBudget: Double {
-//                    return stipenAmount + otherIncomeAmount - rentAmount
-//                }
-                
                 if isCalculated {
                     VStack{
                         Text("Based on calculation, your monthly budget for the other expense will be:")
@@ -437,45 +399,18 @@ struct BudgetView: View {
                 }
             }
             .onAppear {
-                // printBudgetData()
-                // Check if there's data in the database when the view appears
                 if let firstItem = budgetData.first {
-                    // If data exists, set stipenAmount from the database
-                    print("tanggal di buat : \(firstItem.created_at) \(firstItem.savings) \(firstItem.monthly_budget)")
-                    let ss = firstItem.savings
-                    let mb = firstItem.monthly_budget
-                    let xx = ss/mb*100
-                    print("ss \(ss) mb \(mb) xx \(xx)")
-                    print(type(of: ss))
-                    print(type(of: mb))
-                    if mb != 0 {
-                        let bg = Int(ss/mb)
-                        print("bg \(bg)")
-                        savingInput = String(Int(xx))
-                        isCalculated = true
-                    }
-                    
-                    
-//                    savingInput = firstItem.savings/firstItem.monthly_budget*100
-//                    String((Int(firstItem.savings)/Int(firstItem.monthly_budget)*100))
-//                    savingInput = String((Int(firstItem.savings)/Int(firstItem.monthly_budget)*100))
-                    stipenInput2 = "1000000"
-                    stipenInput = "1000000"
-                    //String(Int(firstItem.stipen))
-                    savingAmount = firstItem.stipen
+                    stipenAmount = firstItem.stipen
                     otherIncomeAmount = firstItem.income
                     rentAmount = firstItem.rent
-//                    waterAmount = firstItem.water
-//                    electricityAmount = firstItem.electricity
-//                    otherExpensesAmount = firstItem.others
+                    waterAmount = firstItem.water
+                    electricityAmount = firstItem.electricity
+                    otherExpensesAmount = firstItem.others
                     savingAmount = firstItem.savings
                     monthlyBudget = firstItem.monthly_budget
-                    
-                    
-                    
-                    print("all : \(stipenInput) - \(otherIncomeAmount) - \(rentAmount) - \(savingAmount) - \(monthlyBudget)")
-                    print(type(of: stipenInput))
-                    print(stipendValue)
+                    if !monthlyBudget.isNaN {
+                        isCalculated = true
+                    }
                 } else {
                     // add initial data
 //                    addBudget()
@@ -525,7 +460,7 @@ struct BudgetView: View {
     
     
     func validate(){
-        if Int(budgetBulanan) < 0 {
+        if Int(monthlyBudget) < 0 {
             isBudgetNegative = true
         } else {
             print("data positif")
@@ -546,10 +481,12 @@ struct BudgetView: View {
     }
     
     func updateBudget(){
+        print("updateBudget")
         isCalculated = false
         if !stipenAmount.isNaN && !otherIncomeAmount.isNaN && !rentAmount.isNaN {
             addBudget()
             isCalculated = true
+            keyboardIsFocused=false
         } else {
             isCalculated = false
             isAlertBudget = true
@@ -558,12 +495,6 @@ struct BudgetView: View {
     
     func addBudget(){
         monthlyBudget = stipenAmount + otherIncomeAmount - rentAmount
-//        let percentSaving = Double(savingInput)!
-//        savingAmount = monthlyBudget*percentSaving/100
-//        let doublesaving = savingAmount/monthlyBudget
-//        savingInput = String(Int(savingAmount/monthlyBudget*100))
-//        print("saving \(savingInput)")
-        print("monthlyBudget \(monthlyBudget)")
         let tambahData = BudgetData(
             stipen:Double(stipenAmount),income:Double(otherIncomeAmount), rent:Double(rentAmount), water:waterAmount, electricity:electricityAmount, others:otherExpensesAmount, savings:Double(savingAmount), monthly_budget:Double(monthlyBudget)
         )

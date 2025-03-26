@@ -110,11 +110,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressFood >= 1 {
-                        Text("\(Int(progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
+                        Text("\((progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\(Int(progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
+                        Text("\((progressFood * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(budgetFood, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
@@ -153,11 +153,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressTransport >= 1 {
-                        Text("\(Int(progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
+                        Text("\((progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\(Int(progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
+                        Text("\((progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
@@ -196,11 +196,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressUtilities >= 1 {
-                        Text("\(Int(progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
+                        Text("\((progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\(Int(progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
+                        Text("\((progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
@@ -241,11 +241,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressEntertainment >= 1 {
-                        Text("\(Int(progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
+                        Text("\((progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\(Int(progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
+                        Text("\((progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }

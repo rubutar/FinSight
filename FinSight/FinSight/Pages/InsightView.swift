@@ -81,7 +81,7 @@ struct InsightPage: View {
                     NavigationLink(destination: BudgetView()){
                         HStack {
                             Image(systemName: "chevron.backward")
-                            Text("Back")
+                            Text("Budget")
                         }.foregroundStyle(Color("bgThemeGreen"))
                     }
                 }

@@ -26,16 +26,16 @@ struct OneDimensionalBar: View {
     
     // Variables for each category (defaulting to 0 if no data)
     var totalFood: Double { totalByCategory["Food"] ?? 0 }
-    var totalShopping: Double { totalByCategory["Shopping"] ?? 0 }
-    var totalTransport: Double { totalByCategory["Transport"] ?? 0 }
-    var totalOthers: Double { totalByCategory["Others"] ?? 0 }
+    var totalShopping: Double { totalByCategory["Transport"] ?? 0 }
+    var totalTransport: Double { totalByCategory["Utilities"] ?? 0 }
+    var totalOthers: Double { totalByCategory["Entertainment"] ?? 0 }
     
     private var categoryTotals: [(category: String, amount: Double)] {
         [
             ("Food", totalFood),
-            ("Shopping", totalShopping),
-            ("Transport", totalTransport),
-            ("Others", totalOthers)
+            ("Transport", totalShopping),
+            ("Utilities", totalTransport),
+            ("Entertainment", totalOthers)
         ]
     }
         
@@ -45,7 +45,7 @@ struct OneDimensionalBar: View {
             HStack {
                 Text(currentMonth)
                 Spacer()
-                Text("Rp. \(totalExpenses, specifier: "%.0f") of Rp. \(monthlyBudget, specifier: "%.0f") used")
+                Text("Rp. \(totalExpenses, specifier: "%.0f") of Rp. \(monthlyBudget, specifier: "%.0f") spent")
                     .foregroundColor(.secondary)
                     .font(.caption)
             }

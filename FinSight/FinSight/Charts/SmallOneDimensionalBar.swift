@@ -92,13 +92,13 @@ struct SmallOneDimensionalBar: View {
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progress * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. \(totalFood, specifier: "%.0f") of Rp. \(monthlyBudget*0.2, specifier: "%.0f"))")
                     .font(.caption)
                     .foregroundColor(.black)
             }
             .padding()
             VStack(alignment: .leading) {
-                Text("Food")
+                Text("Transport")
                     .font(.headline)
                 
                 ZStack(alignment: .leading) {
@@ -115,13 +115,13 @@ struct SmallOneDimensionalBar: View {
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progress * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(monthlyBudget*0.1, specifier: "%.0f"))")
                     .font(.caption)
                     .foregroundColor(.black)
             }
             .padding()
             VStack(alignment: .leading) {
-                Text("Food")
+                Text("Utilities")
                     .font(.headline)
                 
                 ZStack(alignment: .leading) {
@@ -138,13 +138,13 @@ struct SmallOneDimensionalBar: View {
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progress * 100))%  (Rp. \(totalFood) of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(monthlyBudget*0.2, specifier: "%.0f"))")
                     .font(.caption)
                     .foregroundColor(.black)
             }
             .padding()
             VStack(alignment: .leading) {
-                Text("Food")
+                Text("Entertainment")
                     .font(.headline)
                 
                 ZStack(alignment: .leading) {
@@ -161,7 +161,7 @@ struct SmallOneDimensionalBar: View {
                 }
                 .frame(width: 150, height: 20, alignment: .leading)
                 
-                Text("\(Int(progress * 100))%  (Rp. 500.000 of Rp. 1.000.000)")
+                Text("\(Int(progress * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(monthlyBudget*0.3, specifier: "%.0f"))")
                     .font(.caption)
                     .foregroundColor(.black)
             }

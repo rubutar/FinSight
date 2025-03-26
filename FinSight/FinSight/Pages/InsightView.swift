@@ -62,7 +62,7 @@ struct InsightPage: View {
     var body: some View {
         // Version 1 - white bacground
 //        ScrollView{
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             OneDimensionalBar()
                 .padding()
             SmallOneDimensionalBar()

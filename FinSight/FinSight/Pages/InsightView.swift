@@ -127,11 +127,12 @@ struct InsightPage: View {
                                     Text(expenseData.date, format: .dateTime.day().month().year())
                                         .font(.body)
                                 }
-                                .padding(8)
+                                .padding()
                                 .background(Color("bgColor5"))
                                 .cornerRadius(10)
                             }
                         }
+                        .onDelete(perform: deleteExpensesData)
                     }
                     .listStyle(.plain)
                     
@@ -148,6 +149,13 @@ struct InsightPage: View {
         case "Shopping": return Color.green
         case "Transport": return Color.orange
         default: return Color.purple
+        }
+    }
+//    deleteExpenses
+    func deleteExpensesData(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let expenseData = expensesData[index]
+            modelContext.delete(expenseData)
         }
     }
 }

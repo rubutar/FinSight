@@ -33,26 +33,27 @@ struct SmallOneDimensionalBar: View {
     let portionUtilities: Double = 0.2
     let portionEntertainment: Double = 0.3
     
+    let frameLength: CGFloat = 300
     // Variables for each category (defaulting to 0 if no data)
     var totalFood: Double { totalByCategory["Food"] ?? 0 }
     var totalTransport: Double { totalByCategory["Transport"] ?? 0 }
     var totalUtilities: Double { totalByCategory["Utilities"] ?? 0 }
     var totalEntertainment: Double { totalByCategory["Entertainment"] ?? 0 }
-
+    
     var budgetFood: Double { monthlyBudget*portionFood }
     var budgetTransport: Double { monthlyBudget*portionTransport }
     var budgetUtilities: Double { monthlyBudget*portionUtilities }
     var budgetEntertainment: Double { monthlyBudget*portionEntertainment }
-
     
-//    private var categoryTotals: [(category: String, amount: Double)] {
-//        [
-//            ("Food", totalFood),
-//            ("Transport", totalTransport),
-//            ("Utilities", totalUtilities),
-//            ("Entertainment", totalEntertainment)
-//        ]
-//    }
+    
+    //    private var categoryTotals: [(category: String, amount: Double)] {
+    //        [
+    //            ("Food", totalFood),
+    //            ("Transport", totalTransport),
+    //            ("Utilities", totalUtilities),
+    //            ("Entertainment", totalEntertainment)
+    //        ]
+    //    }
     
     //    private let columns = [
     //        GridItem(.flexible(), spacing: 1),
@@ -94,12 +95,20 @@ struct SmallOneDimensionalBar: View {
                     // Background Bar (Remaining)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.blue.opacity(0.2))
-                        .frame(width: CGFloat(portionFood) * 300, height: 20)
+                        .frame(width: CGFloat(portionFood) * frameLength, height: 20)
+                    
+                    if progressFood >= 1 {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.red)
+                            .frame(width: CGFloat(portionFood) * CGFloat(progressFood) * frameLength, height: 20)
+                    } else {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue)
+                            .frame(width: CGFloat(portionFood) * CGFloat(progressFood) * frameLength, height: 20)
+                    }
 
-                    // Foreground Bar (Used)
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.blue)
-                        .frame(width: CGFloat(portionFood) * CGFloat(progressFood) * 300, height: 20)
                     
                 }
                 .frame(width: 300, height: 20, alignment: .leading)
@@ -122,7 +131,7 @@ struct SmallOneDimensionalBar: View {
             }
             
         }
-
+        
         HStack{
             VStack(alignment: .leading) {
                 Text("Transport")
@@ -137,12 +146,20 @@ struct SmallOneDimensionalBar: View {
                     // Background Bar (Remaining)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.green.opacity(0.2))
-                        .frame(width: CGFloat(portionTransport) * 300, height: 20)
-
-                    // Foreground Bar (Used)
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.green)
-                        .frame(width: CGFloat(portionTransport) * CGFloat(progressTransport) * 300, height: 20)
+                        .frame(width: CGFloat(portionTransport) * frameLength, height: 20)
+                    
+                    if progressTransport >= 1 {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.red)
+                            .frame(width: CGFloat(portionTransport) * CGFloat(progressTransport) * frameLength, height: 20)
+                    } else {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.green)
+                            .frame(width: CGFloat(portionTransport) * CGFloat(progressTransport) * frameLength, height: 20)
+                    }
+                    
                     
                 }
                 .frame(width: 300, height: 20, alignment: .leading)
@@ -153,11 +170,11 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressTransport >= 1 {
-                        Text("\((progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
+                        Text("\((progressTransport * 100), specifier: "%.0f")%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\((progressTransport * 100))%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
+                        Text("\((progressTransport * 100), specifier: "%.0f")%  (Rp. \(totalTransport, specifier: "%.0f") of Rp. \(budgetTransport, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
@@ -165,7 +182,7 @@ struct SmallOneDimensionalBar: View {
             }
             
         }
-
+        
         HStack{
             VStack(alignment: .leading) {
                 Text("Utilities")
@@ -180,27 +197,35 @@ struct SmallOneDimensionalBar: View {
                     // Background Bar (Remaining)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.orange.opacity(0.2))
-                        .frame(width: CGFloat(portionUtilities) * 300, height: 20)
-
-                    // Foreground Bar (Used)
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.orange)
-                        .frame(width: CGFloat(portionUtilities) * CGFloat(progressUtilities) * 300, height: 20)
+                        .frame(width: CGFloat(portionUtilities) * frameLength, height: 20)
+                    
+                    if progressUtilities >= 1 {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.red)
+                            .frame(width: CGFloat(portionUtilities) * CGFloat(progressUtilities) * frameLength, height: 20)
+                    } else {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.orange)
+                            .frame(width: CGFloat(portionUtilities) * CGFloat(progressUtilities) * frameLength, height: 20)
+                    }
+                    
                     
                 }
-                .frame(width: 300, height: 20, alignment: .leading)
-
+                .frame(width: frameLength, height: 20, alignment: .leading)
+                
                 HStack{
                     Circle()
                         .fill(Color.orange) // Set the color to green
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressUtilities >= 1 {
-                        Text("\((progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
+                        Text("\((progressUtilities * 100), specifier: "%.0f")%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\((progressUtilities * 100))%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
+                        Text("\((progressUtilities * 100), specifier: "%.0f")%  (Rp. \(totalUtilities, specifier: "%.0f") of Rp. \(budgetUtilities, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
@@ -209,7 +234,7 @@ struct SmallOneDimensionalBar: View {
             
             
         }
-
+        
         HStack{
             VStack(alignment: .leading) {
                 Text("Entertainment")
@@ -224,16 +249,25 @@ struct SmallOneDimensionalBar: View {
                     // Background Bar (Remaining)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.purple.opacity(0.2))
-                        .frame(width: CGFloat(portionEntertainment) * 300, height: 20)
+                        .frame(width: CGFloat(portionEntertainment) * frameLength, height: 20)
+                    
+                    if progressEntertainment >= 1 {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.red)
+                            .frame(width: CGFloat(portionEntertainment) * CGFloat(progressEntertainment) * frameLength, height: 20)
+                    }
+                    else {
+                        // Foreground Bar (Used)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.purple)
+                            .frame(width: CGFloat(portionEntertainment) * CGFloat(progressEntertainment) * frameLength, height: 20)
+                    }
 
-                    // Foreground Bar (Used)
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.purple)
-                        .frame(width: CGFloat(portionEntertainment) * CGFloat(progressEntertainment) * 300, height: 20)
                     
                 }
-                .frame(width: 300, height: 20, alignment: .leading)
-
+                .frame(width: frameLength, height: 20, alignment: .leading)
+                
                 
                 HStack{
                     Circle()
@@ -241,17 +275,16 @@ struct SmallOneDimensionalBar: View {
                         .frame(width: 10, height: 10) // Set the size of the circle
                     
                     if progressEntertainment >= 1 {
-                        Text("\((progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
+                        Text("\((progressEntertainment * 100), specifier: "%.0f")%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.red)
                     } else {
-                        Text("\((progressEntertainment * 100))%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
+                        Text("\((progressEntertainment * 100), specifier: "%.0f")%  (Rp. \(totalEntertainment, specifier: "%.0f") of Rp. \(budgetEntertainment, specifier: "%.0f")) spent")
                             .font(.caption)
                             .foregroundColor(.black)
                     }
                 }
             }
-            
         }
         
         //        LazyVGrid(columns: columns, spacing: 2) {

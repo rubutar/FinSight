@@ -13,12 +13,22 @@ struct EditExpenseView: View {
     @Environment(\.dismiss) var dismiss
     @Bindable var expenseData: ExpenseData
     
+    @State private var selectedDate = Date()
+
+    // Compute the start and end of the current month
+    var currentMonthRange: ClosedRange<Date> {
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: Date()))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+        return startOfMonth...endOfMonth
+    }
+    
     var body: some View {
         Form {
             TextField("Amount", value: $expenseData.amount, format: .currency(code: "IDR")).keyboardType(.decimalPad)
             TextField("Note", text: $expenseData.note)
-            DatePicker("Date", selection: $expenseData.date, displayedComponents: .date)
-                .datePickerStyle(.compact)
+            DatePicker("Date", selection: $expenseData.date, in: currentMonthRange, displayedComponents: .date)
+                .datePickerStyle(.compact) // You can change to .compact or .wheel
             Picker("Category", selection: $expenseData.category) {
                 Text("Food").tag("Food")
                 Text("Transport").tag("Transport")
